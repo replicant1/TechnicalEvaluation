@@ -8,6 +8,8 @@
     android:fitsSystemWindows="true"
     tools:context="tech.bailey.rod.MainActivity">
 
+    <!-- Application bar contains only the application name above and tab bar underneath -->
+
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"
         android:layout_width="match_parent"
