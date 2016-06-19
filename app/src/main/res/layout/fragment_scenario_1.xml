@@ -24,57 +24,61 @@ Vertical linear layout has 5 rows and occupies all of tab body
         android:layout_height="match_parent"
         android:layout_weight="1">
 
-        <LinearLayout
-            android:id="@+id/scenario_1_row_1"
+        <HorizontalScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:padding="16dp"
-            android:divider="@drawable/divider_vertical"
-            android:orientation="horizontal"
-            android:showDividers="middle">
-®
-            <!-- Row 1, Item 1 -->
+            android:layout_weight="1">
 
-            <View
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/scenario_1_row_1"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#11cc34" />
+                android:divider="@drawable/divider_vertical"
+                android:orientation="horizontal"
+                android:padding="16dp"
+                android:showDividers="middle">
 
-            <!-- Row 1, Item 2 -->
+                <!-- Row 1, Item 1 -->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#441134" />
+                <View
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#11cc34" />
 
-            <!-- Row 1, Item 3 -->
+                <!-- Row 1, Item 2 -->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#dd0066" />
+                <View
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#441134" />
 
-            <!-- Row 1, Item 4 -->
+                <!-- Row 1, Item 3 -->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#fa00ad" />
+                <View
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#dd0066" />
 
-            <!-- Row 1, Item 5 -->
+                <!-- Row 1, Item 4 -->
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="#1abb66" />
+                <View
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#fa00ad" />
 
-        </LinearLayout>
+                <!-- Row 1, Item 5 -->
+
+                <View
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#1abb66" />
+
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
     </android.support.v7.widget.CardView>
 
     <!-- Row 2 of 5: Contains a single ViewPager with 4 pages -->
