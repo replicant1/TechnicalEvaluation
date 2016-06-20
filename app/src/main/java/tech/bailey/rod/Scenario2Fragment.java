@@ -1,6 +1,7 @@
 package tech.bailey.rod;
 
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -8,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ListView;
 import android.widget.Spinner;
 
 import com.google.gson.Gson;
@@ -15,29 +18,67 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.List;
 
 import tech.bailey.rod.json.Destination;
 
 
-public class Scenario2Fragment extends Fragment {
+public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private static final String TAG = Scenario2Fragment.class.getSimpleName();
 
+    private Spinner destinationSpinner;
+
+    private View map;
+
+    private Button navigateButton;
+
+    private ListView travelTimesList;
+
+    private IScenario2Presenter presenter;
+
     public Scenario2Fragment() {
-        // Empty - Fragments are required to have a public, no-arg constructor
+       // presenter = new Scenario2Presenter(this, new Scenario2Model());
     }
 
     public static Scenario2Fragment newInstance() {
         return new Scenario2Fragment();
     }
 
+    @Override
+    public void setDestinationNames(@NonNull List<String> destinationNames) {
+    }
+
+    @Override
+    public void setSelectedDestinationName(String destinationName) {
+
+    }
+
+    @Override
+    public void setModeTravelTimes(List<ModeTravelTime> modeTravelTimes) {
+
+    }
+
+    @Override
+    public void showMap(float latitude, float longitude) {
+
+    }
+
+    @Override
+    public void hideMap() {
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // TODO Change to fragment_scenario_2
         View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
 
-        Spinner destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
+        destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
+        travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
+//        map = (View) fragmentView.findViewById(R.id.scenario_2_map);
+        navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.planets_array, // Data source for spinner items
                 R.layout.destination_name_spinner_item);

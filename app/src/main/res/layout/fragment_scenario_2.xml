@@ -46,16 +46,28 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_toRightOf="@+id/scenario_2_destination_label"
                 android:spinnerMode="dropdown" />
 
-            <!-- "Details:" field label -->
+            <!-- "Travel Times from Central:" field label -->
 
             <TextView
-                android:id="@+id/scenario_2_details_label"
+                android:id="@+id/scenario_2_travel_times_label"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/scenario_2_destination_label"
-                android:paddingLeft="12dp"
-                android:text="Details:"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="12dp"
+                android:text="Travel times from Central:"
                 android:textSize="14sp" />
+
+            <!-- List of individual travel times per mode of transport -->
+
+            <ListView
+                android:id="@+id/scenario_2_travel_times_list"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_below="@id/scenario_2_travel_times_label"
+                android:layout_marginLeft="12dp"
+                android:background="@color/Bisque" />
+
 
             <!--"Navigate" button -->
 
@@ -64,8 +76,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 style="@style/Widget.AppCompat.Button.Borderless"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/scenario_2_details_label"
-                android:layout_marginTop="8dp"
+                android:layout_below="@+id/scenario_2_travel_times_list"
                 android:text="Navigate"
                 android:textColor="@color/colorPrimary"
                 android:textSize="14sp" />
