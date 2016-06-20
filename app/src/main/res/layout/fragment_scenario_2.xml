@@ -26,8 +26,6 @@ Vertical linear layout has 5 rows and occupies all of tab body
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <!-- "Destination" field label -->
-
             <TextView
                 android:id="@+id/scenario_2_destination_label"
                 android:layout_width="wrap_content"
@@ -38,8 +36,6 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:paddingLeft="12dp"
                 android:text="Destination:"
                 android:textSize="14sp" />
-
-            <!-- "Destination" field input control (spinner) -->
 
             <Spinner
                 android:id="@+id/scenario_2_destination_spinner"
