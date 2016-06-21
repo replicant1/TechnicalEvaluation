@@ -94,6 +94,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                                         android:layout_width="match_parent"
                                         android:layout_height="match_parent"
                                         android:layout_weight="1"
+                                        android:visibility="gone"
                                         card_view:contentPadding="8dp">
 
         <LinearLayout

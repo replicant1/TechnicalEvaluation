@@ -8,4 +8,6 @@ public interface IScenario2Presenter {
     public void destinationNameSelected(String destinationName);
 
     public void navigateButtonPressed();
+
+    public void hideMapButtonPressed();
 }

@@ -11,11 +11,16 @@ import tech.bailey.rod.json.Destination;
  */
 public interface IScenario2Model {
 
-    public void setSelectedDestination(@NonNull Destination destination);
-
-    @NonNull
-    public Destination getSelectedDestination();
-
     @NonNull
     public List<Destination> getDestinations();
+
+    public boolean getMapIsShowing();
+
+    public Destination getSelectedDestination();
+
+    public void setDestinations(@NonNull List<Destination> destinations);
+
+    public void setMapIsShowing(boolean showing);
+
+    public void setSelectedDestinationByName(@NonNull String destinationName);
 }

@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -19,6 +20,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -43,8 +45,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private IScenario2Presenter presenter;
 
+    private IScenario2Model model;
+
     public Scenario2Fragment() {
-        // presenter = new Scenario2Presenter(this, new Scenario2Model());
+        model = new Scenario2Model();
+        presenter = new Scenario2Presenter(this, model);
     }
 
     public static Scenario2Fragment newInstance() {
@@ -71,12 +76,13 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void showMap(float latitude, float longitude) {
-
+        mapCard.setVisibility(View.VISIBLE);
+        // TODO Move map marker to (latitude, longitude)
     }
 
     @Override
     public void hideMap() {
-
+        mapCard.setVisibility(View.GONE);
     }
 
     @Nullable
@@ -85,12 +91,18 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
 
         destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
+        destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
+
         travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
+
         navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
+        navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
 
         mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
         map = (View) fragmentView.findViewById(R.id.scenario_2_map);
+
         closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
+        closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.planets_array, // Data source for spinner items
@@ -108,7 +120,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         // Read in some dummy data
         readInSampleJson();
-
 
         return fragmentView;
     }
@@ -153,6 +164,42 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         for (Destination destination : destinations) {
             Log.i(TAG, "destination: " + destination);
+        }
+
+        // TODO Shouldn't bypass the presenter
+        List<Destination> destinationList = Arrays.asList(destinations);
+        model.setDestinations(destinationList);
+
+        presenter.destinationNameSelected(destinationList.get(0).name);
+    }
+
+    private static class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
+        @Override
+        public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            Log.i(TAG, "onItemSelected: view=" + view + ",position=" + position + ",id=" + id);
+//                presenter.destinationNameSelected(                );
+        }
+
+        @Override
+        public void onNothingSelected(AdapterView<?> adapterView) {
+            // Empty
+        }
+    }
+
+    /**
+     * Listens for clicks on "Navigate" button and transmits them to the
+     */
+    private class NavigateButtonOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            presenter.navigateButtonPressed();
+        }
+    }
+
+    private class CloseMapCardButtonOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            presenter.hideMapButtonPressed();
         }
     }
 }
