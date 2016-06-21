@@ -45,8 +45,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     public Scenario2Fragment() {
         // presenter = new Scenario2Presenter(this, new Scenario2Model());
-
-
     }
 
     public static Scenario2Fragment newInstance() {
@@ -64,7 +62,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void setModeTravelTimes(List<ModeTravelTime> modeTravelTimes) {
-
+        ModeTravelTimesListAdapter adapter = new ModeTravelTimesListAdapter( //
+                getActivity(), //
+                R.layout.adapter_mode_travel_time, //
+                modeTravelTimes); //
+        travelTimesList.setAdapter(adapter);
     }
 
     @Override
@@ -96,8 +98,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         destinationSpinner.setAdapter(adapter);
 
-        readInSampleJson();
-
+        // Some dummy data for the Mode of Transport list
         ModeTravelTime car = new ModeTravelTime(ModeOfTransport.CAR, "30 Mins");
         ModeTravelTime train = new ModeTravelTime(ModeOfTransport.TRAIN, "15 Mins");
         List<ModeTravelTime> times = new LinkedList<ModeTravelTime>();
@@ -105,8 +106,13 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         times.add(train);
         setModeTravelTimes(times);
 
+        // Read in some dummy data
+        readInSampleJson();
+
+
         return fragmentView;
     }
+
 
     private void readInSampleJson() {
         BufferedReader reader = null;

@@ -20,27 +20,6 @@ import java.util.List;
  */
 public interface IScenario2View {
 
-    public class ModeTravelTime {
-        private final ModeOfTransport mode;
-
-        private final String travelTime;
-
-        public ModeTravelTime(@NonNull ModeOfTransport mode, @NonNull String travelTime) {
-            this.mode = mode;
-            this.travelTime = travelTime;
-        }
-
-        @NonNull
-        public ModeOfTransport getMode() {
-            return mode;
-        }
-
-        @NonNull
-        public String getTravelTime() {
-            return travelTime;
-        }
-    }
-
     public void setDestinationNames(@NonNull List<String> destinationNames);
 
     public void setSelectedDestinationName(String destinationName);

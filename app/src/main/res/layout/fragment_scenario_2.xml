@@ -63,10 +63,11 @@ Vertical linear layout has 5 rows and occupies all of tab body
             <ListView
                 android:id="@+id/scenario_2_travel_times_list"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/scenario_2_travel_times_label"
-                android:layout_marginLeft="12dp"
-                android:background="@color/Bisque"/>
+                android:dividerHeight="1dp"
+                android:divider="@android:color/transparent"
+                android:layout_marginLeft="20dp"/>
 
 
             <!--"Navigate" button -->
@@ -105,8 +106,8 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="right"
-                android:background="@drawable/action_button"
                 android:layout_marginBottom="8dp"
+                android:background="@drawable/action_button"
                 android:src="@drawable/ic_close_black_24dp"/>
 
             <View

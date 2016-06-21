@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:padding="4dp"
+              android:orientation="horizontal">
+
+    <!-- Icon of car or train that graphically indicates the mode of transport -->
+
+    <ImageView
+        android:id="@+id/mode_of_transport_icon"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"/>
+
+    <!-- Text of the travel time e.g. "53 Mins" -->
+
+    <TextView
+        android:id="@+id/mode_of_transport_travel_tine"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="8dp"
+        android:singleLine="true"/>
+
+</LinearLayout>
