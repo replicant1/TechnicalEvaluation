@@ -1,9 +1,11 @@
 package tech.bailey.rod;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,12 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;
@@ -35,7 +43,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private Spinner destinationSpinner;
 
-    private View map;
+    private SupportMapFragment supportMapFragment;
 
     private View mapCard;
 
@@ -46,6 +54,10 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private IScenario2Presenter presenter;
 
     private IScenario2Model model;
+
+    private boolean mapIsReady;
+
+    private GoogleMap googleMap;
 
     public Scenario2Fragment() {
         model = new Scenario2Model();
@@ -77,7 +89,15 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     @Override
     public void showMap(float latitude, float longitude) {
         mapCard.setVisibility(View.VISIBLE);
-        // TODO Move map marker to (latitude, longitude)
+
+        if (mapIsReady) {
+            LatLng taronga = new LatLng(-33.8433, 151.2411);
+            googleMap.addMarker(new MarkerOptions().position(taronga).title("Taronga Zoo"));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(taronga, 18));
+        }
+        else {
+            Log.w(TAG, "showMap was called before map was ready");
+        }
     }
 
     @Override
@@ -99,7 +119,17 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
 
         mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
-        map = (View) fragmentView.findViewById(R.id.scenario_2_map);
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
+
+        if (supportMapFragment != null) {
+            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    mapIsReady = true;
+                    Scenario2Fragment.this.googleMap = googleMap;
+                }
+            });
+        }
 
         closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
         closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
@@ -123,7 +153,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         return fragmentView;
     }
-
 
     private void readInSampleJson() {
         BufferedReader reader = null;
