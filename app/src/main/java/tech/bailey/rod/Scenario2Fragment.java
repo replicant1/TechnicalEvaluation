@@ -33,6 +33,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import tech.bailey.rod.json.Destination;
+import tech.bailey.rod.json.DestinationAdapter;
 
 
 public class Scenario2Fragment extends Fragment implements IScenario2View {
@@ -70,6 +71,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void setDestinationNames(@NonNull List<String> destinationNames) {
+        DestinationAdapter adapter = new DestinationAdapter( //
+                getActivity(), //
+                R.layout.destination_name_spinner_dropdown_item, //
+                destinationNames); //
+        destinationSpinner.setAdapter(adapter);
     }
 
     @Override
@@ -91,9 +97,9 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         mapCard.setVisibility(View.VISIBLE);
 
         if (mapIsReady) {
-            LatLng taronga = new LatLng(-33.8433, 151.2411);
-            googleMap.addMarker(new MarkerOptions().position(taronga).title("Taronga Zoo"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(taronga, 18));
+            LatLng location = new LatLng(latitude, longitude);
+            googleMap.addMarker(new MarkerOptions().position(location));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
         }
         else {
             Log.w(TAG, "showMap was called before map was ready");
@@ -134,11 +140,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
         closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
 
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-                R.array.planets_array, // Data source for spinner items
-                R.layout.destination_name_spinner_item);
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        destinationSpinner.setAdapter(adapter);
+//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
+//                R.array.planets_array, // Data source for spinner items
+//                R.layout.destination_name_spinner_dropdown_item);
+//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+//        destinationSpinner.setAdapter(adapter);
 
         // Some dummy data for the Mode of Transport list
         ModeTravelTime car = new ModeTravelTime(ModeOfTransport.CAR, "30 Mins");
@@ -199,7 +205,15 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         List<Destination> destinationList = Arrays.asList(destinations);
         model.setDestinations(destinationList);
 
-        presenter.destinationNameSelected(destinationList.get(0).name);
+        List<String> destinationNames = new LinkedList<String>();
+        for (Destination destination : destinationList) {
+            destinationNames.add(destination.name);
+        }
+        setDestinationNames(destinationNames);
+
+        // setSelectedDestinationName(destinationNames.get(0));
+
+        presenter.destinationNameSelected(destinationNames.get(0));
     }
 
     private static class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {

@@ -42,7 +42,6 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
                 android:layout_alignParentTop="true"
-                android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/scenario_2_destination_label"
                 android:spinnerMode="dropdown"/>
 
