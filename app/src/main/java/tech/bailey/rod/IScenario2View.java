@@ -25,7 +25,7 @@ public interface IScenario2View {
 
         private final String travelTime;
 
-        private ModeTravelTime(@NonNull ModeOfTransport mode, @NonNull String travelTime) {
+        public ModeTravelTime(@NonNull ModeOfTransport mode, @NonNull String travelTime) {
             this.mode = mode;
             this.travelTime = travelTime;
         }

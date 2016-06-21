@@ -3,4 +3,10 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="black_transparent_10_pct">#16000000</color>
+    <color name="black_transparent_5_pct">#05000000</color>
+    <color name="black_transparent_50_pct">#80000000</color>
+    <color name="black_transparent_60_pct">#99000000</color>
+    <color name="black_transparent_75_pct">#BF000000</color>
 </resources>

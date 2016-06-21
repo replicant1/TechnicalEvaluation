@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 
@@ -18,6 +19,7 @@ import com.google.gson.Gson;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.LinkedList;
 import java.util.List;
 
 import tech.bailey.rod.json.Destination;
@@ -27,9 +29,13 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private static final String TAG = Scenario2Fragment.class.getSimpleName();
 
+    private ImageButton closeMapCardButton;
+
     private Spinner destinationSpinner;
 
     private View map;
+
+    private View mapCard;
 
     private Button navigateButton;
 
@@ -38,7 +44,9 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private IScenario2Presenter presenter;
 
     public Scenario2Fragment() {
-       // presenter = new Scenario2Presenter(this, new Scenario2Model());
+        // presenter = new Scenario2Presenter(this, new Scenario2Model());
+
+
     }
 
     public static Scenario2Fragment newInstance() {
@@ -76,8 +84,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
         travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
-//        map = (View) fragmentView.findViewById(R.id.scenario_2_map);
         navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
+
+        mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
+        map = (View) fragmentView.findViewById(R.id.scenario_2_map);
+        closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
                 R.array.planets_array, // Data source for spinner items
@@ -86,6 +97,13 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         destinationSpinner.setAdapter(adapter);
 
         readInSampleJson();
+
+        ModeTravelTime car = new ModeTravelTime(ModeOfTransport.CAR, "30 Mins");
+        ModeTravelTime train = new ModeTravelTime(ModeOfTransport.TRAIN, "15 Mins");
+        List<ModeTravelTime> times = new LinkedList<ModeTravelTime>();
+        times.add(car);
+        times.add(train);
+        setModeTravelTimes(times);
 
         return fragmentView;
     }
@@ -117,7 +135,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         Log.i(TAG, "====================");
         Log.i(TAG, "==   SAMPLE.JSON  ==");
-        Log.i(TAG,"====================");
+        Log.i(TAG, "====================");
 
         Log.i(TAG, jsonString);
 
