@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+Row 1 of 5: Contains 5 items of equal width, side by side. The width of the items
+is dynamically calculated in code so that exactly 3 of the items shows at any time.
+The items are selectable on a mutually exclusive basis.
+-->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/scenario_1_row_1"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:divider="@drawable/divider_vertical"
+                android:orientation="horizontal"
+                android:padding="@dimen/card_padding"
+                android:showDividers="middle">
+
+                <!-- Row 1, Item 1 -->
+
+                <View
+                    android:id="@+id/scenario_1_swatch_1"
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#3CB371"
+                    android:tag="MEDIUM_SEA_GREEN"/>
+
+                <!-- Row 1, Item 2 -->
+
+                <View
+                    android:id="@+id/scenario_1_swatch_2"
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#00BFFF"
+                    android:tag="DEEP_SKY_BLUE"/>
+
+                <!-- Row 1, Item 3 -->
+
+                <View
+                    android:id="@+id/scenario_1_swatch_3"
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#FAFAD2"
+                    android:tag="LIGHT_GOLDENROD_YELLOW"/>
+
+                <!-- Row 1, Item 4 -->
+
+                <View
+                    android:id="@+id/scenario_1_swatch_4"
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#BA55D3"
+                    android:tag="MEDIUM_ORCHID"/>
+
+                <!-- Row 1, Item 5 -->
+
+                <View
+                    android:id="@+id/scenario_1_swatch_5"
+                    android:layout_width="@dimen/scenario_1_color_swatch_width"
+                    android:layout_height="match_parent"
+                    android:background="#1E90FF"
+                    android:tag="DODGER_BLUE"/>
+
+            </LinearLayout>
+
+
+        </HorizontalScrollView>
+
+
+    </android.support.v7.widget.CardView>
+
+</merge>
