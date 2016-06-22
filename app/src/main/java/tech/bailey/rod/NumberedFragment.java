@@ -3,15 +3,19 @@ package tech.bailey.rod;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by rodbailey on 22/06/2016.
  */
 public class NumberedFragment extends Fragment {
+
+    private static String TAG = NumberedFragment.class.getSimpleName();
 
     private static final String BUNDLE_ARG_THIS_FRAGMENT_NUMBER = "thisFragmentNumber";
 
@@ -51,9 +55,25 @@ public class NumberedFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_numbered, container, false);
 
+        fragmentView.setOnClickListener(new FragmentClickListener());
+
         TextView numberText = (TextView) fragmentView.findViewById(R.id.fragment_number_text);
         numberText.setText(String.format("Page %d of %d", thisFragmentNumber, totalFragments));
 
         return fragmentView;
+    }
+
+    private class FragmentClickListener implements View.OnClickListener {
+
+        @Override
+        public void onClick(View view) {
+            // To save time I am raising the Toast here directly. But this is short-cicuiting the
+            // architecture. To do it properly we would send a message to the presenter to indicate
+            // that the fragment had been clicked. Then that info would be communicated to the model
+            // which would eventually result in a message reaching the IScenario1View which would
+            // raise the Toast.
+            String toastText = String.format("Page %d of %d", thisFragmentNumber, totalFragments);
+            Toast.makeText(getContext(),toastText, Toast.LENGTH_SHORT).show();
+        }
     }
 }

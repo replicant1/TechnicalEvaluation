@@ -5,5 +5,4 @@
           android:layout_height="match_parent"
           android:background="@color/Beige"
           android:gravity="center"
-          android:text="Page X of Y"
           android:textColor="@color/Gray"/>
