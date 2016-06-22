@@ -2,7 +2,6 @@
 Vertical linear layout has 5 rows and occupies all of tab body
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/scenario_1_rows"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
