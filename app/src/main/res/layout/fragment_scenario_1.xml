@@ -2,16 +2,16 @@
 Vertical linear layout has 5 rows and occupies all of tab body
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/scenario_1_rows"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="#e4e4e4"
-    android:divider="@drawable/divider_horizontal"
-    android:elevation="2dp"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin"
-    android:showDividers="middle">
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/scenario_1_rows"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="#e4e4e4"
+              android:divider="@drawable/divider_horizontal"
+              android:elevation="2dp"
+              android:orientation="vertical"
+              android:padding="@dimen/activity_vertical_margin"
+              android:showDividers="middle">
 
     <!--
     Row 1 of 5: Contains 5 items of equal width, side by side. The width of the items
@@ -19,10 +19,10 @@ Vertical linear layout has 5 rows and occupies all of tab body
     The items are selectable on a mutually exclusive basis.
     -->
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        style="@style/CardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
 
         <HorizontalScrollView
             android:layout_width="match_parent"
@@ -45,7 +45,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                     android:layout_width="@dimen/scenario_1_color_swatch_width"
                     android:layout_height="match_parent"
                     android:background="#3CB371"
-                    android:tag="MEDIUM_SEA_GREEN" />
+                    android:tag="MEDIUM_SEA_GREEN"/>
 
                 <!-- Row 1, Item 2 -->
 
@@ -54,7 +54,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                     android:layout_width="@dimen/scenario_1_color_swatch_width"
                     android:layout_height="match_parent"
                     android:background="#00BFFF"
-                    android:tag="DEEP_SKY_BLUE" />
+                    android:tag="DEEP_SKY_BLUE"/>
 
                 <!-- Row 1, Item 3 -->
 
@@ -63,7 +63,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                     android:layout_width="@dimen/scenario_1_color_swatch_width"
                     android:layout_height="match_parent"
                     android:background="#FAFAD2"
-                    android:tag="LIGHT_GOLDENROD_YELLOW" />
+                    android:tag="LIGHT_GOLDENROD_YELLOW"/>
 
                 <!-- Row 1, Item 4 -->
 
@@ -72,7 +72,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                     android:layout_width="@dimen/scenario_1_color_swatch_width"
                     android:layout_height="match_parent"
                     android:background="#BA55D3"
-                    android:tag="MEDIUM_ORCHID" />
+                    android:tag="MEDIUM_ORCHID"/>
 
                 <!-- Row 1, Item 5 -->
 
@@ -81,7 +81,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                     android:layout_width="@dimen/scenario_1_color_swatch_width"
                     android:layout_height="match_parent"
                     android:background="#1E90FF"
-                    android:tag="DODGER_BLUE" />
+                    android:tag="DODGER_BLUE"/>
 
             </LinearLayout>
 
@@ -91,18 +91,37 @@ Vertical linear layout has 5 rows and occupies all of tab body
 
     </android.support.v7.widget.CardView>
 
-    <!-- Row 2 of 5: Contains a single ViewPager with 4 pages -->
+    <!-- Row 2 of 5: Contains a single ViewPager with 4 numbered pages and a page indicator underneath -->
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        style="@style/CardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
 
-        <View
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#fe3" />
+            android:padding="8dp"
+            android:divider="@drawable/divider_vertical"
+            android:showDividers="middle"
+            android:orientation="vertical">
+
+            <android.support.v4.view.ViewPager
+                android:id="@+id/scenario_1_numbered_fragment_view_pager"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1"/>
+
+            <com.viewpagerindicator.CirclePageIndicator
+                android:id="@+id/scenario_1_numbered_fragmen_circle_page_indicator"
+                android:paddingTop="8dp"
+                app:radius="4dp"
+                app:fillColor="@color/Gray"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </LinearLayout>
 
     </android.support.v7.widget.CardView>
 
@@ -113,10 +132,10 @@ Vertical linear layout has 5 rows and occupies all of tab body
     -->
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        style="@style/CardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -133,7 +152,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|top"
-                android:text="Top" />
+                android:text="Top"/>
 
             <TextView
                 style="@style/TextAlignmentView"
@@ -141,7 +160,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|center_vertical"
-                android:text="Center" />
+                android:text="Center"/>
 
             <TextView
                 style="@style/TextAlignmentView"
@@ -149,7 +168,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center_horizontal|bottom"
-                android:text="Bottom" />
+                android:text="Bottom"/>
         </LinearLayout>
     </android.support.v7.widget.CardView>
 
@@ -158,10 +177,10 @@ Vertical linear layout has 5 rows and occupies all of tab body
     in Row 1 that is currently selected.
     -->
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        style="@style/CardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
 
         <TextView
             android:id="@+id/scenario_1_row_4"
@@ -170,7 +189,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
             android:gravity="center_horizontal|center_vertical"
             android:singleLine="true"
             android:text=" "
-            android:textSize="14sp" />
+            android:textSize="14sp"/>
     </android.support.v7.widget.CardView>
 
     <!--
@@ -179,10 +198,10 @@ Vertical linear layout has 5 rows and occupies all of tab body
     -->
 
     <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        style="@style/CardView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_weight="1">
+                                        style="@style/CardView"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="match_parent"
+                                        android:layout_weight="1">
 
         <LinearLayout
             android:id="@+id/scenario_1_row_5"
@@ -202,7 +221,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:gravity="center"
                 android:tag="RED"
                 android:text="Red"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <Button
                 android:id="@+id/scenario_1_button_green"
@@ -212,7 +231,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:gravity="center"
                 android:tag="GREEN"
                 android:text="Green"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
             <Button
                 android:id="@+id/scenario_1_button_blue"
@@ -222,7 +241,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
                 android:gravity="center"
                 android:tag="BLUE"
                 android:text="Blue"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

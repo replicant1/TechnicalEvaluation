@@ -28,4 +28,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.0+'
     compile 'com.google.code.gson:gson:2.6.2'
     compile 'com.google.android.gms:play-services:9.0.2'
+    compile 'fr.avianey.com.viewpagerindicator:library:2.4.1.1@aar'
 }

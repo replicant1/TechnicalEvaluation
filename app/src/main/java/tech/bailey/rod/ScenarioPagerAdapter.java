@@ -23,7 +23,7 @@ public class ScenarioPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public int getCount() {
-        return 2;  // Scenario1Fragment on first tab, Scenario2Fragment on second tag
+        return 2;  // Scenario1Fragment on first tab, Scenario2Fragment on second tab
     }
 
     @Override

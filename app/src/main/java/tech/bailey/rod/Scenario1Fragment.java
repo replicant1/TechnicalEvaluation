@@ -5,11 +5,15 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+
+import com.google.android.gms.maps.model.Circle;
+import com.viewpagerindicator.CirclePageIndicator;
 
 
 public class Scenario1Fragment extends Fragment implements IScenario1View {
@@ -75,6 +79,19 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
         fragmentView.findViewById(R.id.scenario_1_button_red).setOnClickListener(fillColorButtonClickListener);
         fragmentView.findViewById(R.id.scenario_1_button_green).setOnClickListener(fillColorButtonClickListener);
         fragmentView.findViewById(R.id.scenario_1_button_blue).setOnClickListener(fillColorButtonClickListener);
+
+        // Row containing 4 numbered fragments and a page indicator is underneath.
+        // Bind the adapter to the pager
+        ViewPager numberedFragmentViewPager = (ViewPager) fragmentView.findViewById(
+                R.id.scenario_1_numbered_fragment_view_pager);
+        numberedFragmentViewPager.setAdapter(new NumberedFragmentPagerAdapter(
+                getActivity().getSupportFragmentManager()));
+
+        // Bind the pager to the page indicator
+        CirclePageIndicator pageIndicator = (CirclePageIndicator) fragmentView.findViewById(
+                R.id.scenario_1_numbered_fragmen_circle_page_indicator);
+        pageIndicator.setViewPager(numberedFragmentViewPager);
+
 
         // The text view in the Card that shows the name associated with the currently selected
         // swatch.
