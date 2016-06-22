@@ -16,8 +16,7 @@ Vertical linear layout has 5 rows and occupies all of tab body
         layout="@layout/scenario_2_card_destination"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="1"/>
-
+        android:layout_weight="0"/>
 
     <include
         layout="@layout/scenario_2_card_map"
