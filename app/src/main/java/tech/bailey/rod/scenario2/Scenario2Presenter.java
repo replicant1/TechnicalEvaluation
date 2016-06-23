@@ -1,8 +1,16 @@
 package tech.bailey.rod.scenario2;
 
 import android.support.annotation.NonNull;
+import android.support.design.widget.TabLayout;
 import android.util.Log;
 
+import com.squareup.otto.Subscribe;
+
+import java.util.LinkedList;
+import java.util.List;
+
+import tech.bailey.rod.bus.DestinationsUpdatedEvent;
+import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
 /**
@@ -19,6 +27,9 @@ public class Scenario2Presenter implements IScenario2Presenter {
     public Scenario2Presenter(@NonNull IScenario2View view, @NonNull IScenario2Model model) {
         this.scenario2View = view;
         this.scenario2Model = model;
+        Log.i(TAG, "==== Registering Scenario2Presenter for events =====");
+        EventBusSingleton.getInstance().getBus().register(this);
+        Log.i(TAG, "====== Back from registering Scenario2Presenter ======");
     }
 
     @Override
@@ -26,9 +37,30 @@ public class Scenario2Presenter implements IScenario2Presenter {
         // Transmit newly selected destination to model
         scenario2Model.setSelectedDestinationByName(destinationName);
 
-        // Note: Do not need to inform scenario2View of new selection
-        // because the spinner will already have updated its own appearance at the
-        // time of selection.
+        // Tell the view to update the Travel Times list with info from the newly
+        // selected destination. The model doesn't care about this.
+        Destination selectedDestination = scenario2Model.getSelectedDestination();
+
+        String carTime = selectedDestination.fromcentral.car;
+        String trainTime = selectedDestination.fromcentral.train;
+
+        List<ModeTravelTime> times = new LinkedList<ModeTravelTime>();
+
+        if (carTime != null) {
+            times.add(new ModeTravelTime(ModeOfTransport.CAR, carTime));
+        }
+
+        if (trainTime != null) {
+            times.add(new ModeTravelTime(ModeOfTransport.TRAIN, trainTime));
+        }
+
+        scenario2View.setModeTravelTimes(times);
+
+        if (scenario2Model.getMapIsShowing()) {
+            float latitude = selectedDestination.location.latitude;
+            float longitude = selectedDestination.location.longitude;
+            scenario2View.showMap(latitude, longitude);
+        }
     }
 
     @Override
@@ -57,5 +89,24 @@ public class Scenario2Presenter implements IScenario2Presenter {
 
         // Alert the view that the model has changed
         scenario2View.hideMap();
+    }
+
+    @Subscribe
+    public void onBusEvent(DestinationsUpdatedEvent event) {
+        Log.i(TAG, "==============================================");
+        Log.i(TAG, "===== Into Scenario2Presenter.onBusEvent =====");
+        Log.i(TAG, "==== event.getDestinations=" + event.getDestinations());
+        if (event.getDestinations() != null) {
+            Log.i(TAG, "==== #destinations=" + event.getDestinations().size());
+        }
+
+        Log.i(TAG, "==============================================");
+
+        List<String> names = new LinkedList<String>();
+        for (Destination destination : event.getDestinations())  {
+            names.add(destination.name);
+        }
+
+        scenario2View.setDestinationNames(names);
     }
 }

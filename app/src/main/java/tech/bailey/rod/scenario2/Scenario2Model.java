@@ -1,9 +1,14 @@
 package tech.bailey.rod.scenario2;
 
 import android.support.annotation.NonNull;
+import android.util.Log;
+
+import com.squareup.otto.Produce;
 
 import java.util.List;
 
+import tech.bailey.rod.bus.DestinationsUpdatedEvent;
+import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
 /**
@@ -20,7 +25,8 @@ public class Scenario2Model implements IScenario2Model {
     private boolean mapIsShowing;
 
     public Scenario2Model() {
-        // Empty
+       // Empty
+        EventBusSingleton.getInstance().getBus().register(this);
     }
 
     @NonNull
@@ -48,7 +54,20 @@ public class Scenario2Model implements IScenario2Model {
 
     @Override
     public void setDestinations(@NonNull List<Destination> destinations) {
+        Log.i(TAG, "==============================================");
+        Log.i(TAG, "==== INto Scenario2Model.setDestinations =====");
+        Log.i(TAG, "==============================================");
         this.destinations = destinations;
+        Log.i(TAG, "===== Posting DestinationsUpdatedEvent ======");
+        EventBusSingleton.getInstance().getBus().post(new DestinationsUpdatedEvent(destinations));
+    }
+
+    @Produce
+    public DestinationsUpdatedEvent produceDestinationsUpdatedEvent() {
+        Log.i(TAG, "=============================================");
+        Log.i(TAG, "==== Into.produceDestinationsUpdatedEvent with destinations=" + destinations);
+        Log.i(TAG, "=============================================");
+        return new DestinationsUpdatedEvent(destinations);
     }
 
     @Override

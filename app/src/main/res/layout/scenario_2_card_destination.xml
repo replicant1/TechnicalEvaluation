@@ -63,7 +63,7 @@
                 android:visibility="visible"/>
 
 
-            <!--"Navigate" button -->
+            <!--"Navigate" button - initially disabled. Becomes enabled when a destination is selected -->
 
             <Button
                 android:id="@+id/scenario_2_button_navigate"
@@ -74,6 +74,7 @@
                 android:text="Navigate"
                 android:textColor="@color/colorPrimary"
                 android:visibility="visible"
+                android:enabled="false"
                 android:textSize="14sp"/>
 
         </RelativeLayout>

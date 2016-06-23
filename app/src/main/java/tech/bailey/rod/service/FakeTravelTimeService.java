@@ -1,9 +1,8 @@
-package tech.bailey.rod.tech.bailey.rod.service;
+package tech.bailey.rod.service;
 
 import android.content.Context;
 import android.util.Log;
 
-import com.android.internal.util.Predicate;
 import com.google.gson.Gson;
 
 import java.io.BufferedReader;

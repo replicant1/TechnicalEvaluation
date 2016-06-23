@@ -15,10 +15,10 @@ import tech.bailey.rod.scenario1.IScenario1Model;
 import tech.bailey.rod.scenario1.Scenario1Model;
 import tech.bailey.rod.scenario2.IScenario2Model;
 import tech.bailey.rod.scenario2.Scenario2Model;
-import tech.bailey.rod.tech.bailey.rod.service.FakeTravelTimeService;
-import tech.bailey.rod.tech.bailey.rod.service.IJobFailureHandler;
-import tech.bailey.rod.tech.bailey.rod.service.IJobSuccessHandler;
-import tech.bailey.rod.tech.bailey.rod.service.ITravelTimeService;
+import tech.bailey.rod.service.FakeTravelTimeService;
+import tech.bailey.rod.service.IJobFailureHandler;
+import tech.bailey.rod.service.IJobSuccessHandler;
+import tech.bailey.rod.service.ITravelTimeService;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        IScenario1Model scenario1Model = new Scenario1Model();
-        final IScenario2Model scenario2Model = new Scenario2Model();
-        MainModel mainModel = new MainModel(scenario1Model, scenario2Model);
 
         // Note: Could use dependency injection to sway between fake
         // and real impl's of ITravelTimeService.
@@ -71,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                         for (Destination destination : result) {
                             Log.i(TAG, "destination: " + destination);
                         }
-                        scenario2Model.setDestinations(result);
+                        MainModel.getInstance().getScenario2Model().setDestinations(result);
                     }
                 },
                 new IJobFailureHandler() {

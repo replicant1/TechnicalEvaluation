@@ -1,4 +1,4 @@
-package tech.bailey.rod.tech.bailey.rod.service;
+package tech.bailey.rod.service;
 
 /**
  * Created by rodbailey on 23/06/2016.
