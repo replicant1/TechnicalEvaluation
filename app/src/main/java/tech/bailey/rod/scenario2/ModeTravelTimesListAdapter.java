@@ -1,7 +1,6 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario2;
 
 import android.content.Context;
-import android.graphics.AvoidXfermode;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -9,6 +8,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
+
+import tech.bailey.rod.R;
 
 /**
  * Adapter behind the list of ModeTravelTime instances that appear in Scenario 2. Each item

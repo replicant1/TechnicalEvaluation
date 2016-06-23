@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario1;
 
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,8 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.Circle;
 import com.viewpagerindicator.CirclePageIndicator;
+
+import tech.bailey.rod.R;
 
 
 public class Scenario1Fragment extends Fragment implements IScenario1View {

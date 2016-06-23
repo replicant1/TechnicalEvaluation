@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context="tech.bailey.rod.MainActivity">
+    tools:context=".app.MainActivity">
 
     <!-- Application bar contains only the application name above and tab bar underneath -->
 

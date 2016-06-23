@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario2;
 
 /**
  * The known modes of transport that are used to measure the travel time FromCentral.

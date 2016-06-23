@@ -1,8 +1,11 @@
-package tech.bailey.rod;
+package tech.bailey.rod.app;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
+import tech.bailey.rod.scenario1.Scenario1Fragment;
+import tech.bailey.rod.scenario2.Scenario2Fragment;
 
 /**
  * A {@link FragmentPagerAdapter} that returns a fragment corresponding to

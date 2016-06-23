@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario1;
 
 /**
  * These color names/hex codes are taken from the standard X11 color set.

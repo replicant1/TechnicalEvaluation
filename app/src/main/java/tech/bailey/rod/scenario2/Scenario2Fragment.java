@@ -1,17 +1,14 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario2;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -32,6 +29,7 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import tech.bailey.rod.R;
 import tech.bailey.rod.json.Destination;
 import tech.bailey.rod.json.DestinationAdapter;
 
@@ -140,80 +138,36 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
         closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
 
-//        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this.getContext(),
-//                R.array.planets_array, // Data source for spinner items
-//                R.layout.destination_name_spinner_dropdown_item);
-//        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-//        destinationSpinner.setAdapter(adapter);
-
         // Some dummy data for the Mode of Transport list
-        ModeTravelTime car = new ModeTravelTime(ModeOfTransport.CAR, "30 Mins");
-        ModeTravelTime train = new ModeTravelTime(ModeOfTransport.TRAIN, "15 Mins");
-        List<ModeTravelTime> times = new LinkedList<ModeTravelTime>();
-        times.add(car);
-        times.add(train);
-        setModeTravelTimes(times);
+//        ModeTravelTime car = new ModeTravelTime(ModeOfTransport.CAR, "30 Mins");
+//        ModeTravelTime train = new ModeTravelTime(ModeOfTransport.TRAIN, "15 Mins");
+//        List<ModeTravelTime> times = new LinkedList<ModeTravelTime>();
+//        times.add(car);
+//        times.add(train);
+//        setModeTravelTimes(times);
 
         // Read in some dummy data
-        readInSampleJson();
+        //readInSampleJson();
 
         return fragmentView;
     }
 
     private void readInSampleJson() {
-        BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(getContext().getAssets().open("sample.json")));
-
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-        } catch (IOException iox) {
-            Log.w(TAG, iox);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.w(TAG, e);
-                }
-            }
-        }
-
-        String jsonString = buffer.toString();
-
-        Log.i(TAG, "====================");
-        Log.i(TAG, "==   SAMPLE.JSON  ==");
-        Log.i(TAG, "====================");
-
-        Log.i(TAG, jsonString);
-
-        Gson gson = new Gson();
-        Destination[] destinations = gson.fromJson(jsonString, new Destination[0].getClass());
-
-        Log.i(TAG, "destinations=" + destinations);
-        Log.i(TAG, "destinations.length=" + destinations.length);
-
-        for (Destination destination : destinations) {
-            Log.i(TAG, "destination: " + destination);
-        }
 
         // TODO Shouldn't bypass the presenter
-        List<Destination> destinationList = Arrays.asList(destinations);
-        model.setDestinations(destinationList);
-
-        List<String> destinationNames = new LinkedList<String>();
-        for (Destination destination : destinationList) {
-            destinationNames.add(destination.name);
-        }
-        setDestinationNames(destinationNames);
-
-        // setSelectedDestinationName(destinationNames.get(0));
-
-        presenter.destinationNameSelected(destinationNames.get(0));
+//        List<Destination> destinationList = Arrays.asList(destinations);
+//        model.setDestinations(destinationList);
+//
+//        List<String> destinationNames = new LinkedList<String>();
+//        for (Destination destination : destinationList) {
+//            destinationNames.add(destination.name);
+//        }
+//        setDestinationNames(destinationNames);
+//
+//        // setSelectedDestinationName(destinationNames.get(0));
+//
+//        presenter.destinationNameSelected(destinationNames.get(0));
     }
 
     private static class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {

@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario2;
 
 /**
  * This interface must be implemented by any party wanting to present an IScenario2View

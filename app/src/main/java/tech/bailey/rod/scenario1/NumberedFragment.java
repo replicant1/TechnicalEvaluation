@@ -1,14 +1,15 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario1;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import tech.bailey.rod.R;
 
 /**
  * Created by rodbailey on 22/06/2016.
