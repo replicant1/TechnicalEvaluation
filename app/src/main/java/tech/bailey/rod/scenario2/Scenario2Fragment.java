@@ -12,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,23 +43,33 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private ImageButton closeMapCardButton;
 
+    private View destinationCard;
+
     private Spinner destinationSpinner;
 
-    private SupportMapFragment supportMapFragment;
+    private GoogleMap googleMap;
 
     private View mapCard;
 
-    private Button navigateButton;
-
-    private ListView travelTimesList;
-
-    private IScenario2Presenter presenter;
+    private boolean mapIsReady;
 
     private IScenario2Model model;
 
-    private boolean mapIsReady;
+    private Button navigateButton;
 
-    private GoogleMap googleMap;
+    private IScenario2Presenter presenter;
+
+    private ProgressBar progressBar;
+
+    private TextView progressMessage;
+
+    private ViewGroup progressMonitor;
+
+    private Button retryButton;
+
+    private SupportMapFragment supportMapFragment;
+
+    private ListView travelTimesList;
 
     public Scenario2Fragment() {
 
@@ -69,7 +80,79 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
+    public void hideMap() {
+        mapCard.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hideProgressPanel() {
+        Log.i(TAG, "=== hideProgressPanel and make destinationCard visible");
+//        progressMonitor.setVisibility(View.GONE);
+//        destinationCard.setVisibility(View.VISIBLE);
+//        mapCard.setVisibility(View.GONE);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
+
+        progressMonitor = (ViewGroup) fragmentView.findViewById(R.id.scenario_2_progress_monitor);
+        mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
+        destinationCard = fragmentView.findViewById(R.id.scenario_2_destination_card);
+
+        progressBar = (ProgressBar) fragmentView.findViewById(R.id.scenario_2_progress_bar);
+        progressMessage = (TextView) fragmentView.findViewById(R.id.scenario_2_progress_message);
+        retryButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_retry);
+
+        // When first created, both cards are invisible and the progress monitor is visible
+//        progressMonitor.setVisibility(View.GONE);
+//        mapCard.setVisibility(View.GONE);
+//        destinationCard.setVisibility(View.GONE);
+
+        destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
+        destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
+
+        travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
+
+        navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
+        navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
+
+
+        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
+
+        if (supportMapFragment != null) {
+            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap googleMap) {
+                    mapIsReady = true;
+                    Scenario2Fragment.this.googleMap = googleMap;
+                }
+            });
+        }
+
+        closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
+        closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
+
+        return fragmentView;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        // We defer creation of the presenter until here because as soon as it is created,
+        // and linked to the model, there may be a flood of update events from the model
+        // (e.g. if the destinations have already been read in, as happens when using the
+        // FakeTravelTimeService), and we don't want to try and update views that have not
+        // yet been created.
+        presenter = new Scenario2Presenter(this, MainModel.getInstance().getScenario2Model());
+    }
+
+    @Override
     public void setDestinationNames(@NonNull List<String> destinationNames) {
+        progressMonitor.setVisibility(View.GONE);
+        destinationCard.setVisibility(View.VISIBLE);
+        mapCard.setVisibility(View.GONE);
+
         DestinationAdapter adapter = new DestinationAdapter( //
                 getActivity(), //
                 R.layout.destination_name_spinner_dropdown_item, //
@@ -79,6 +162,15 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         // Spinners do not allow "no selection", so after repopulating the list
         // of available choices, we automatically select the first itme in the list
         setSelectedDestinationName(destinationNames.get(0));
+    }
+
+    @Override
+    public void setModeTravelTimes(List<ModeTravelTime> modeTravelTimes) {
+        ModeTravelTimesListAdapter adapter = new ModeTravelTimesListAdapter( //
+                getActivity(), //
+                R.layout.adapter_mode_travel_time, //
+                modeTravelTimes); //
+        travelTimesList.setAdapter(adapter);
     }
 
     @Override
@@ -100,15 +192,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
-    public void setModeTravelTimes(List<ModeTravelTime> modeTravelTimes) {
-        ModeTravelTimesListAdapter adapter = new ModeTravelTimesListAdapter( //
-                getActivity(), //
-                R.layout.adapter_mode_travel_time, //
-                modeTravelTimes); //
-        travelTimesList.setAdapter(adapter);
-    }
-
-    @Override
     public void showMap(float latitude, float longitude) {
         mapCard.setVisibility(View.VISIBLE);
 
@@ -122,52 +205,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
-    public void hideMap() {
-        mapCard.setVisibility(View.GONE);
+    public void showProgressPanel(boolean progressMessage, boolean allowRetry) {
+//        mapCard.setVisibility(View.GONE);
+//        destinationCard.setVisibility(View.GONE);
+//        progressMonitor.setVisibility(View.VISIBLE);
     }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        // We defer creation of the presenter until here because as soon as it is created,
-        // and linked to the model, there may be a flood of update events from the model
-        // (e.g. if the destinations have already been read in, as happens when using the
-        // FakeTravelTimeService), and we don't want to try and update views that have not
-        // yet been created.
-        presenter = new Scenario2Presenter(this, MainModel.getInstance().getScenario2Model());
-    }
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
-
-        destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
-        destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
-
-        travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
-
-        navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
-        navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
-
-        mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
-        supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
-
-        if (supportMapFragment != null) {
-            supportMapFragment.getMapAsync(new OnMapReadyCallback() {
-                @Override
-                public void onMapReady(GoogleMap googleMap) {
-                    mapIsReady = true;
-                    Scenario2Fragment.this.googleMap = googleMap;
-                }
-            });
-        }
-
-        closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
-        closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
-
-        return fragmentView;
-    }
-
 
     private class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override

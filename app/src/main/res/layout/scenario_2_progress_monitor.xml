@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+A single page that will show a progress spinner with a message underneath, while data is being
+externally loaded. If the load fails, this card is changed to show a failure message and a "Retry"
+button. If the load succeeds, this card disappears to be replaced by the card for displaying
+Scenario 2 data.
+-->
+
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+       xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <LinearLayout
+        android:id="@+id/scenario_2_progress_monitor"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:divider="@drawable/divider_horizontal"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:visibility="visible"
+        android:padding="@dimen/card_padding"
+        android:showDividers="middle">
+
+        <ProgressBar
+            android:id="@+id/scenario_2_progress_bar"
+            style="@android:style/Widget.ProgressBar.Large"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/scenario_2_progress_message"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Loading travel times..."/>
+
+        <Button
+            android:id="@+id/scenario_2_button_retry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Retry"
+            android:textSize="12sp"
+            android:visibility="gone"/>
+
+    </LinearLayout>
+
+
+</merge>

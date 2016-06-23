@@ -91,6 +91,11 @@ public class Scenario2Presenter implements IScenario2Presenter {
         scenario2View.hideMap();
     }
 
+    @Override
+    public void retryButtonPressed() {
+
+    }
+
     @Subscribe
     public void onBusEvent(DestinationsUpdatedEvent event) {
         Log.i(TAG, "==============================================");
@@ -98,15 +103,17 @@ public class Scenario2Presenter implements IScenario2Presenter {
         Log.i(TAG, "==== event.getDestinations=" + event.getDestinations());
         if (event.getDestinations() != null) {
             Log.i(TAG, "==== #destinations=" + event.getDestinations().size());
+            List<String> names = new LinkedList<String>();
+            for (Destination destination : event.getDestinations())  {
+                names.add(destination.name);
+            }
+
+            scenario2View.setDestinationNames(names);
+        }
+        else {
+            Log.i(TAG, "==== destinations=null");
         }
 
         Log.i(TAG, "==============================================");
-
-        List<String> names = new LinkedList<String>();
-        for (Destination destination : event.getDestinations())  {
-            names.add(destination.name);
-        }
-
-        scenario2View.setDestinationNames(names);
     }
 }

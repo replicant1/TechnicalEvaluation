@@ -29,4 +29,9 @@ public interface IScenario2View {
     public void showMap(float latitude, float longitude);
 
     public void hideMap();
+
+    public void showProgressPanel(boolean progressMessgae, boolean allowRetry);
+
+    public void hideProgressPanel();
+
 }

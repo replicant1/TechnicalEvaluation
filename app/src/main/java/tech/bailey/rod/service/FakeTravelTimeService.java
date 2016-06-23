@@ -26,37 +26,47 @@ public class FakeTravelTimeService implements ITravelTimeService {
     }
 
     @Override
-    public void getTravelTimes(IJobSuccessHandler<List<Destination>> successHandler,
+    public void getTravelTimes(final IJobSuccessHandler<List<Destination>> successHandler,
                                IJobFailureHandler failureHandler) {
-        BufferedReader reader = null;
-        StringBuffer buffer = new StringBuffer();
 
-        try {
-            reader = new BufferedReader(new InputStreamReader(context.getAssets().open("sample.json")));
+        ConsumeTimeJob job = new ConsumeTimeJob(
 
-            String line;
-            while ((line = reader.readLine()) != null) {
-                buffer.append(line);
-            }
-        } catch (IOException iox) {
-            Log.w(TAG, iox);
-        } finally {
-            if (reader != null) {
-                try {
-                    reader.close();
-                } catch (IOException e) {
-                    Log.w(TAG, e);
+                new IJobSuccessHandler() {
+                    @Override
+                    public void onJobSuccess(Object result) {
+                        BufferedReader reader = null;
+                        StringBuffer buffer = new StringBuffer();
+
+                        try {
+                            reader = new BufferedReader(new InputStreamReader(context.getAssets().open("sample.json")));
+
+                            String line;
+                            while ((line = reader.readLine()) != null) {
+                                buffer.append(line);
+                            }
+                        } catch (IOException iox) {
+                            Log.w(TAG, iox);
+                        } finally {
+                            if (reader != null) {
+                                try {
+                                    reader.close();
+                                } catch (IOException e) {
+                                    Log.w(TAG, e);
+                                }
+                            }
+                        }
+
+                        String jsonString = buffer.toString();
+
+                        // Use Google's GSON library to parse the JSON
+                        Gson gson = new Gson();
+                        Destination[] destinationArray = gson.fromJson(jsonString, new Destination[0].getClass());
+                        List<Destination> destinationList = Arrays.asList(destinationArray);
+
+                        successHandler.onJobSuccess(destinationList);
+                    }
                 }
-            }
-        }
-
-        String jsonString = buffer.toString();
-
-        // Use Google's GSON library to parse the JSON
-        Gson gson = new Gson();
-        Destination[] destinationArray = gson.fromJson(jsonString, new Destination[0].getClass());
-        List<Destination> destinationList = Arrays.asList(destinationArray);
-
-        successHandler.onJobSuccess(destinationList);
+                , failureHandler, 5000, true);
+        job.execute();
     }
 }

@@ -15,6 +15,6 @@ public interface IScenario2Presenter {
 
     public void hideMapButtonPressed();
 
-//    @Subscribe
-//    public void onBusEvent(DestinationsUpdatedEvent event);
+    public void retryButtonPressed();
+
 }

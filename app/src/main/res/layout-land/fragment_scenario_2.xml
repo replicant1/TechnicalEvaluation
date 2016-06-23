@@ -12,6 +12,8 @@ Vertical linear layout has 5 rows and occupies all of tab body
               android:padding="@dimen/card_margin"
               android:showDividers="middle">
 
+    <include layout="@layout/scenario_2_progress_monitor"/>
+
     <include
         layout="@layout/scenario_2_card_destination"
         android:layout_width="0dp"

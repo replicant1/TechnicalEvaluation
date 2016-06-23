@@ -44,17 +44,45 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Create the adapter that will return a fragment for each of the three
+        // Create the adapter that will return a fragment for each of the two
         // primary sections of the activity.
         mScenarioPagerAdapter = new ScenarioPagerAdapter(getSupportFragmentManager());
 
-        // Set up the ViewPager with the sections adapter.
+        // Set up the ViewPager with the scenario adapter.
         mViewPager = (ViewPager) findViewById(R.id.container);
         mViewPager.setAdapter(mScenarioPagerAdapter);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
+        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                // Empty
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                Log.i(TAG, "==== onPageSelected position = " + position + "  ====");
+                // If user selected "Scenario 2" tab and we haven't previously loaded the
+                // travel times, start loading them asynchronously now.
+                if (position == 1) {
+                    if (MainModel.getInstance().getScenario2Model().getDestinations() == null) {
+                        loadTravelTimes();
+                    }
+                }
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                // Empty
+            }
+        });
+
+    }
+
+    private void loadTravelTimes() {
+        Log.i(TAG, "==== INto loadTravelTimes ====");
 
         // Note: Could use dependency injection to sway between fake
         // and real impl's of ITravelTimeService.
