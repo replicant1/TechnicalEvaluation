@@ -1,17 +1,23 @@
-Technical Evaluation App
-========================
+##Technical Evaluation App
 
 Rod Bailey
 Friday 24 June 2016
 
-Summary
--------
+#Summary
 
 This is an Android application created as a technical exercise. It aims to illustrate an exemplary architecture (MVP) and the use of some core technologies and patterns that find common application in Android development.
 
-Design Overview
----------------
-Individual features of the application (e.g. "scenario", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
+#Design Overview
+Individual features of the application (e.g. "scenario1", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
+
+Other aspects of the design:
+
+- I try and keep the views as simple and "dumb" (devoid of logic) as possible.
+- As per usual MVP, each layer only communiccates with the layer above and below it. View never talks to Model directly, but only via the intermediary of the presenter. Model never talks to View directly, but only via the intermediary of the presenter.
+- Runtime configuration properties are set in the file `assets/config.properties`
+- Views and Presenters communicate via well defined interfaces e.g. `IScenario1View`, `IScenario1Presenter`.
+- Presenters send messages to Models synchronously, via well defined interfaces. 
+- Models send messages to Presenters asynchrounsly using Events and an EventBus. I have only done this for Scenario 2 at the moment, as it involves use cases where asynchronous results are achieved. This is not so for Scenario 1, so I have saved some time by simply having the presenter update both model and view synchronously.
 
 #### The Facade Pattern
 
@@ -33,12 +39,17 @@ ListAdapter and PageAdapter.
 
 MVP is used at both the feature and architectural level. The **View** is either an Android `Activity` or an Android `Fragment`. For example `MainActivity`, `Scenario1Fragment`, `Scenario2Fragment`
 
-Versions
---------
+#Orientation Changes
+
+Handling orientation changes in an implementation employing fragments is a challenge, because fragments are recreated, making it necessary to somehow preserve their state across the orientation change and recreate the views from the preserved state information. In this app, the class `AppDirectorSingleton` is the repository of all state info retained across orientation changes. 
+
+I have not captured all of those attributes of the view's state that I might have e.g. the scroll position of scroll bars. Doing so would move the architecture closer to MVVP, but perhaps require a bidirectional binding library to achieve efficiently.
+
+#Android Versions
+
 This app will work on Android versions from API level 16 onwards.
 
-Libraries
----------
+#Libraries
 
 The following third party libraries have been used:
 
@@ -49,8 +60,8 @@ The following third party libraries have been used:
 - **Android Support Library** for backwards compatibility and the **card** widget
 - **Google Play Services** for Google Maps
 
-Shortcomings
-------------
+#TODO
+
 Due to a limited time budget, I have not completed the following aspects of the exercise:
 
 - Supporting distinct DEBUG and RELEASE flavors of the app

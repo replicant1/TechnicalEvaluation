@@ -19,6 +19,10 @@ import tech.bailey.rod.service.IJobFailureHandler;
 import tech.bailey.rod.service.IJobSuccessHandler;
 import tech.bailey.rod.service.ITravelTimeService;
 
+/**
+ * Hosts the application's view at the highest level. It's only serious responsibility is to
+ * initiate the loading of Destination data the first time that the "Scenario 2" tab is clicked.
+ */
 public class MainActivity extends AppCompatActivity {
 
     public static final int SCENARIO_2_TAB_INDEX = 1;
@@ -60,6 +64,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    /**
+     * Listens to the app's primary tab and whenever the "Scenario 2" tab is first clicked,
+     * triggers the asynchronous loading of the Destination data that is required for manipulation
+     * in the Scenario 2 tab.
+     */
     private class ScenarioTabChangeListener implements ViewPager.OnPageChangeListener {
 
         private final Context context;
@@ -80,13 +89,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public void onPageSelected(int position) {
-            Log.i(TAG, "==== onPageSelected position = " + position + "  ====");
             // If user selected "Scenario 2" tab and we haven't previously loaded the
             // travel times, start loading them asynchronously now.
             if (position == SCENARIO_2_TAB_INDEX) {
                 AppDirectorSingleton app = AppDirectorSingleton.getInstance();
                 if (app.getScenario2Model().getDestinations() == null) {
-                    app.loadTravelTimeData(context);
+                    app.loadTravelTimeData();
                 }
             }
         }

@@ -18,9 +18,12 @@ import tech.bailey.rod.service.IJobFailureHandler;
 import tech.bailey.rod.service.IJobSuccessHandler;
 import tech.bailey.rod.service.ITravelTimeService;
 import tech.bailey.rod.service.TravelTimeService;
+import tech.bailey.rod.util.ConfigSingleton;
 
 /**
- * Aggregates all the state information held by the application.
+ * Aggregates all the state information held by the application. Across device orientation changes,
+ * this information remains intact, and the presenters and views can be recreated from scratch and
+ * then configure themselves using the information retained in this Singleton.
  */
 public class AppDirectorSingleton {
 
@@ -34,7 +37,8 @@ public class AppDirectorSingleton {
 
     private ITravelTimeService travelTimeService;
 
-    private final boolean USE_REAL_TRAVEL_TIME_SERVICE = true;
+    private final boolean USE_REAL_TRAVEL_TIME_SERVICE =
+            !ConfigSingleton.getInstance().UseFakeTravelTimeService();
 
     private AppDirectorSingleton() {
         // Empty
@@ -52,12 +56,12 @@ public class AppDirectorSingleton {
         return scenario2Model;
     }
 
-    public void loadTravelTimeData(@NonNull Context context) {
+    public void loadTravelTimeData() {
         if (travelTimeService == null) {
             if (USE_REAL_TRAVEL_TIME_SERVICE) {
-                travelTimeService = new TravelTimeService(context);
+                travelTimeService = new TravelTimeService(TechnicalEvaluationApplication.context);
             } else {
-                travelTimeService = new FakeTravelTimeService(context);
+                travelTimeService = new FakeTravelTimeService(TechnicalEvaluationApplication.context);
             }
         }
 
@@ -67,6 +71,10 @@ public class AppDirectorSingleton {
         );
     }
 
+    /**
+     * Listens for successful loading of Destinations data and, when it arrives, feeds it to the
+     * central object that stores app-wide state data.
+     */
     private static class GetTravelTimesSuccessHandler implements IJobSuccessHandler<List<Destination>> {
         @Override
         public void onJobSuccess(List<Destination> result) {
@@ -82,10 +90,7 @@ public class AppDirectorSingleton {
 
         @Override
         public void onJobFailure(String failureReason) {
-            Log.i(TAG, "==== About to post DestinationsLoadFailureEvent ====");
-
             EventBusSingleton.getInstance().getBus().post(new DestinationsLoadFailureEvent(failureReason));
-            Log.e(TAG, "Failed to load travel times for reason: " + failureReason);
         }
     }
 }

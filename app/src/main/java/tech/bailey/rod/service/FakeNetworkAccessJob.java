@@ -36,11 +36,6 @@ public class FakeNetworkAccessJob extends AsyncTask<Void, Void, Void> {
     }
 
     @Override
-    protected void onPreExecute() {
-        Log.i(TAG, "ConsumeTimeJob is beginning");
-    }
-
-    @Override
     protected Void doInBackground(Void... voids) {
         try {
             Thread.sleep(millisToConsume, 0);
@@ -59,5 +54,10 @@ public class FakeNetworkAccessJob extends AsyncTask<Void, Void, Void> {
         } else {
             failure.onJobFailure("Failed to access network.");
         }
+    }
+
+    @Override
+    protected void onPreExecute() {
+        Log.i(TAG, "ConsumeTimeJob is beginning");
     }
 }

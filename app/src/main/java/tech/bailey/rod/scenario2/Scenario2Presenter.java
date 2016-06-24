@@ -17,7 +17,10 @@ import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
 /**
- * Created by rodbailey on 21/06/2016.
+ * Presentation layer for Scenario2View.
+ *
+ * @see IScenario2Presenter
+ * @see IScenario2View
  */
 public class Scenario2Presenter implements IScenario2Presenter {
 
@@ -30,9 +33,7 @@ public class Scenario2Presenter implements IScenario2Presenter {
     public Scenario2Presenter(@NonNull IScenario2View view, @NonNull IScenario2Model model) {
         this.scenario2View = view;
         this.scenario2Model = model;
-        Log.i(TAG, "==== Registering Scenario2Presenter for events =====");
         EventBusSingleton.getInstance().getBus().register(this);
-        Log.i(TAG, "====== Back from registering Scenario2Presenter ======");
     }
 
     @Override
@@ -77,8 +78,7 @@ public class Scenario2Presenter implements IScenario2Presenter {
             float latitude = selectedDestination.location.latitude;
             float longitude = selectedDestination.location.longitude;
             scenario2View.showMap(latitude, longitude);
-        }
-        else {
+        } else {
             // This should never happen as the Navigate button should be disabled
             // whenever there is not a currently selected Destination.
             Log.e(TAG, "Code should be unreachable");
@@ -99,21 +99,14 @@ public class Scenario2Presenter implements IScenario2Presenter {
         scenario2View.showProgressPanel(
                 IScenario2View.ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
                 "Loading travel times...");
-        // TODO REplace this clumsiness with a global means of accessing the Context
-        Context context = ((Fragment) scenario2View).getContext();
-        AppDirectorSingleton.getInstance().loadTravelTimeData(context);
+        AppDirectorSingleton.getInstance().loadTravelTimeData();
     }
 
     @Subscribe
     public void onBusEvent(DestinationsLoadSuccessEvent event) {
-        Log.i(TAG, "==============================================");
-        Log.i(TAG, "===== Into Scenario2Presenter.onBusEvent =====");
-        Log.i(TAG, "==== event.getDestinations=" + event.getDestinations());
-
         if (event.getDestinations() != null) {
-            Log.i(TAG, "==== #destinations=" + event.getDestinations().size());
             List<String> names = new LinkedList<String>();
-            for (Destination destination : event.getDestinations())  {
+            for (Destination destination : event.getDestinations()) {
                 names.add(destination.name);
             }
 
@@ -122,18 +115,10 @@ public class Scenario2Presenter implements IScenario2Presenter {
             scenario2View.hideMap();
             scenario2View.showDestinationSelectionPanel();
         }
-        else {
-            Log.i(TAG, "==== destinations=null");
-        }
-
-        Log.i(TAG, "==============================================");
     }
 
     @Subscribe
     public void onBusEvent(DestinationsLoadFailureEvent event) {
-        Log.i(TAG, "==============================");
-        Log.i(TAG, " Into Scenario2Presenter.onBusEvent: DestinationsLoadFailureEVent");
-
         scenario2View.hideMap();
         scenario2View.hideDestinationSelectionPanel();
         scenario2View.showProgressPanel(
