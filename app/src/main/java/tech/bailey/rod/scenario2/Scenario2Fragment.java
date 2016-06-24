@@ -25,6 +25,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
 import tech.bailey.rod.json.DestinationAdapter;
@@ -38,35 +40,45 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private static final String TAG = Scenario2Fragment.class.getSimpleName();
 
-    private ImageButton closeMapCardButton;
+    @BindView(R.id.scenario_2_button_close_map_card)
+    ImageButton closeMapCardButton;
 
-    private View destinationCard;
+    @BindView(R.id.scenario_2_destination_card)
+    View destinationCard;
 
-    private Spinner destinationSpinner;
+    @BindView(R.id.scenario_2_destination_spinner)
+    Spinner destinationSpinner;
 
     private GoogleMap googleMap;
 
-    private View mapCard;
+    @BindView(R.id.scenario_2_map_card)
+    View mapCard;
 
     private boolean mapIsReady;
 
     private IScenario2Model model;
 
-    private Button navigateButton;
+    @BindView(R.id.scenario_2_button_navigate)
+    Button navigateButton;
 
     private IScenario2Presenter presenter;
 
-    private ProgressBar progressBar;
+    @BindView(R.id.scenario_2_progress_bar)
+    ProgressBar progressBar;
 
-    private TextView progressMessage;
+    @BindView(R.id.scenario_2_progress_message)
+    TextView progressMessage;
 
-    private ViewGroup progressMonitor;
+    @BindView(R.id.scenario_2_progress_monitor)
+    ViewGroup progressMonitor;
 
-    private Button retryButton;
+    @BindView(R.id.scenario_2_button_retry)
+    Button retryButton;
 
     private SupportMapFragment supportMapFragment;
 
-    private ListView travelTimesList;
+    @BindView(R.id.scenario_2_travel_times_list)
+    ListView travelTimesList;
 
     public Scenario2Fragment() {
         // Empty
@@ -96,21 +108,10 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
 
-        progressMonitor = (ViewGroup) fragmentView.findViewById(R.id.scenario_2_progress_monitor);
-        mapCard = fragmentView.findViewById(R.id.scenario_2_map_card);
-        destinationCard = fragmentView.findViewById(R.id.scenario_2_destination_card);
-
-        progressBar = (ProgressBar) fragmentView.findViewById(R.id.scenario_2_progress_bar);
-        progressMessage = (TextView) fragmentView.findViewById(R.id.scenario_2_progress_message);
-        retryButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_retry);
+        ButterKnife.bind(this, fragmentView);
+        
         retryButton.setOnClickListener(new RetryButtonOnClickListener());
-
-        destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
         destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
-
-        travelTimesList = (ListView) fragmentView.findViewById(R.id.scenario_2_travel_times_list);
-
-        navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
         navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
 
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
@@ -125,7 +126,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
             });
         }
 
-        closeMapCardButton = (ImageButton) fragmentView.findViewById(R.id.scenario_2_button_close_map_card);
         closeMapCardButton.setOnClickListener(new CloseMapCardButtonOnClickListener());
 
         return fragmentView;
@@ -139,7 +139,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         // FakeTravelTimeService), and we don't want to try and update views that have not
         // yet been created.
         IScenario2Model model = AppDirectorSingleton.getInstance().getScenario2Model();
-        presenter = new Scenario2Presenter(this,model);
+        presenter = new Scenario2Presenter(this, model);
 
         // Initial state is with progress monitor showing and everything else hidden
         hideMap();
