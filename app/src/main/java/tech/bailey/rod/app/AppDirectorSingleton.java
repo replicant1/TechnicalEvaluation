@@ -1,6 +1,7 @@
 package tech.bailey.rod.app;
 
 import android.content.Context;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import java.util.List;
@@ -16,6 +17,7 @@ import tech.bailey.rod.service.FakeTravelTimeService;
 import tech.bailey.rod.service.IJobFailureHandler;
 import tech.bailey.rod.service.IJobSuccessHandler;
 import tech.bailey.rod.service.ITravelTimeService;
+import tech.bailey.rod.service.TravelTimeService;
 
 /**
  * Aggregates all the state information held by the application.
@@ -29,6 +31,10 @@ public class AppDirectorSingleton {
     private final IScenario1Model scenario1Model = new Scenario1Model();
 
     private final IScenario2Model scenario2Model = new Scenario2Model();
+
+    private ITravelTimeService travelTimeService;
+
+    private final boolean USE_REAL_TRAVEL_TIME_SERVICE = true;
 
     private AppDirectorSingleton() {
         // Empty
@@ -46,9 +52,16 @@ public class AppDirectorSingleton {
         return scenario2Model;
     }
 
-    public void loadTravelTimeData(Context context) {
-        ITravelTimeService service = new FakeTravelTimeService(context);
-        service.getTravelTimes(
+    public void loadTravelTimeData(@NonNull Context context) {
+        if (travelTimeService == null) {
+            if (USE_REAL_TRAVEL_TIME_SERVICE) {
+                travelTimeService = new TravelTimeService(context);
+            } else {
+                travelTimeService = new FakeTravelTimeService(context);
+            }
+        }
+
+        travelTimeService.getTravelTimes(
                 new GetTravelTimesSuccessHandler(),
                 new GetTravelTimesFailureHandler()
         );

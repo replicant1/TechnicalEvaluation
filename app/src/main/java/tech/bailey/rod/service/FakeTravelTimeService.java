@@ -1,6 +1,7 @@
 package tech.bailey.rod.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.util.Log;
 
 import com.google.gson.Gson;
@@ -12,6 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import tech.bailey.rod.json.Destination;
+import tech.bailey.rod.util.ConfigSingleton;
+import tech.bailey.rod.util.JsonUtils;
 
 /**
  * An implementation of ITravelTimeService that is suitable for local testing. Returns dummy data
@@ -22,11 +25,14 @@ public class FakeTravelTimeService implements ITravelTimeService {
 
     private static final String TAG = FakeTravelTimeService.class.getSimpleName();
 
-    private static final String SAMPLE_JSON_ASSET = "sample.json";
+    private static final String SAMPLE_JSON_ASSET =
+            ConfigSingleton.getInstance().FakeTravelTimeServiceAsset();
 
-    private static final long MILLIS_FAKE_DELAY = 5000;
+    private static final long MILLIS_FAKE_DELAY =
+            ConfigSingleton.getInstance().FakeTravelTimeServiceDelayMillis();
 
-    public static final boolean OPERATION_SUCCEEDS = false;
+    public static final boolean OPERATION_SUCCEEDS =
+            ConfigSingleton.getInstance().FakeTravelTimeServiceSucceeds();
 
     private final Context context;
 
@@ -67,14 +73,7 @@ public class FakeTravelTimeService implements ITravelTimeService {
                         }
 
                         String jsonString = buffer.toString();
-
-                        // Use Google's GSON library to parse the JSON
-                        Gson gson = new Gson();
-                        Destination[] destinationArray = gson.fromJson(
-                                jsonString, new Destination[0].getClass());
-                        List<Destination> destinationList = Arrays.asList(destinationArray);
-
-                        successHandler.onJobSuccess(destinationList);
+                        successHandler.onJobSuccess(JsonUtils.parseDestinationArray(jsonString));
                     }
                 }
                 , failureHandler, MILLIS_FAKE_DELAY, OPERATION_SUCCEEDS);
