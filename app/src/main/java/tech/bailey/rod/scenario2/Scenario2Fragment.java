@@ -109,7 +109,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         View fragmentView = inflater.inflate(R.layout.fragment_scenario_2, container, false);
 
         ButterKnife.bind(this, fragmentView);
-        
+
         retryButton.setOnClickListener(new RetryButtonOnClickListener());
         destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
         navigateButton.setOnClickListener(new NavigateButtonOnClickListener());

@@ -57,6 +57,7 @@ The following third party libraries have been used:
 - **ViewPagerIndicator** for showing the circular page indicators
 - **Otto** an event bus
 - **Volley** for sending HTTP requests
+- **ButterKnife** for injecting Views
 - **Android Support Library** for backwards compatibility and the **card** widget
 - **Google Play Services** for Google Maps
 
