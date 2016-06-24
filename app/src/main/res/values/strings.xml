@@ -1,5 +1,5 @@
 <resources>
     <string name="app_name">Technical Evaluation</string>
-    <string name="action_settings">Settings</string>
-    <string name="section_format">Hello World from scenario: %1$d</string>
+    <string name="scenario_1_tab_title">Scenario 1</string>
+    <string name="scenario_2_tab_title">Scenario 2</string>
 </resources>

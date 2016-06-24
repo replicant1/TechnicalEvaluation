@@ -1,9 +1,11 @@
 package tech.bailey.rod.app;
 
+import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
+import tech.bailey.rod.R;
 import tech.bailey.rod.scenario1.Scenario1Fragment;
 import tech.bailey.rod.scenario2.Scenario2Fragment;
 
@@ -31,13 +33,19 @@ public class ScenarioPagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        // TODO Use formatted message string
+        Context context = TechnicalEvaluationApplication.context;
+        CharSequence result = null;
+
         switch (position) {
             case 0:
-                return "SCENARIO 1";
+                result =  context.getString(R.string.scenario_1_tab_title);
+                break;
+
             case 1:
-                return "SCENARIO 2";
+                result = context.getString(R.string.scenario_2_tab_title);
+                break;
         }
-        return null;
+
+        return result;
     }
 }

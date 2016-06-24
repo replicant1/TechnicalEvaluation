@@ -4,10 +4,10 @@ import android.app.Application;
 import android.content.Context;
 
 /**
- * The application representing all of SonicDX. This class exists solely for the purposes of providing application-wide
- * access to the application via SonicApplication.context;
+ * The application representing all of the Technical Evaluation app. This class exists solely for
+ * the purposes of providing global access to the contex without having to continually pass it
+ * around.
  */
-
 public class TechnicalEvaluationApplication extends Application {
 
     public static Context context;

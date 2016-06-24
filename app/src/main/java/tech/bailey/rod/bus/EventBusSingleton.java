@@ -3,7 +3,8 @@ package tech.bailey.rod.bus;
 import com.squareup.otto.Bus;
 
 /**
- * Created by rodbailey on 23/06/2016.
+ * Wraps the singleton instance of the Otto event bus. All events in the app must be posted to this
+ * bus. All event posters and subscribers must register with this bus.
  */
 public class EventBusSingleton {
 

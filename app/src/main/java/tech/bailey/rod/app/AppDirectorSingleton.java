@@ -31,14 +31,17 @@ public class AppDirectorSingleton {
 
     private final static AppDirectorSingleton singleton = new AppDirectorSingleton();
 
+    /** All model and view state info behind the "Scenario 1" tab */
     private final IScenario1Model scenario1Model = new Scenario1Model();
 
+    /** Alll model and view state info behind the "Scenario 2" tab */
     private final IScenario2Model scenario2Model = new Scenario2Model();
-
-    private ITravelTimeService travelTimeService;
 
     private final boolean USE_REAL_TRAVEL_TIME_SERVICE =
             !ConfigSingleton.getInstance().UseFakeTravelTimeService();
+
+    /** Facade to server supplying remote data */
+    private ITravelTimeService travelTimeService;
 
     private AppDirectorSingleton() {
         // Empty
@@ -56,6 +59,10 @@ public class AppDirectorSingleton {
         return scenario2Model;
     }
 
+    /**
+     * Triggers the asyncronous loading of data from a remote server. This method is invoked when
+     * the "scenario 2" tab is selected for the first time.
+     */
     public void loadTravelTimeData() {
         if (travelTimeService == null) {
             if (USE_REAL_TRAVEL_TIME_SERVICE) {
@@ -82,6 +89,10 @@ public class AppDirectorSingleton {
         }
     }
 
+    /**
+     * Listens for unsuccessful loading of Destinations data. If this occurs, fire an event that
+     * will eventually result in a failure message being displayed in the Scenario 2 tab.
+     */
     private static class GetTravelTimesFailureHandler implements IJobFailureHandler {
 
         public GetTravelTimesFailureHandler() {
