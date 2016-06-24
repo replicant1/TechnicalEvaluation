@@ -3,14 +3,15 @@
           package="tech.bailey.rod">
 
     <!--
-    Not strictly necessary to have this permision to use Google Maps Android API v2
+    Not strictly necessary to have this permission to use Google Maps Android API v2
     but useful if user should navigate from map to some other related functionality
     that requires "MyLocation" functionality.
     -->
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
 
-    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Need this permission to load Destinations JSON data from remote server -->
+    <uses-permission android:name="android.permission.INTERNET"/>
 
     <application
         android:name="tech.bailey.rod.app.TechnicalEvaluationApplication"
@@ -19,13 +20,6 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
 
-        <!--
-        The API key for Google Maps-based APIs is defined as a string resource.
-        Note that the API key is linked to the encryption key used to sign the APK.
-        You need a different API key for each encryption key, including the release key that is used to
-        sign the APK for publishing.
-        You can define the keys for the debug and release targets in src/debug/ and src/release/.
-         -->
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
