@@ -53,7 +53,7 @@ public class Scenario2Model implements IScenario2Model {
     }
 
     @Override
-    public void setDestinations(@NonNull List<Destination> destinations) {
+    public void setDestinations(List<Destination> destinations) {
         Log.i(TAG, "==============================================");
         Log.i(TAG, "==== INto Scenario2Model.setDestinations =====");
         Log.i(TAG, "==============================================");
