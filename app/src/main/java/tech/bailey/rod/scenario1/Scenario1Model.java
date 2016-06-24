@@ -2,22 +2,14 @@ package tech.bailey.rod.scenario1;
 
 import android.support.annotation.Nullable;
 
-
+/**
+ * Contains all the view tate info about the Scenario 1 tab
+ */
 public class Scenario1Model implements IScenario1Model {
 
     private NamedColor fillColor;
 
     private NamedColor swatchColor;
-
-    @Override
-    public void clearFillColor() {
-        fillColor = null;
-    }
-
-    @Override
-    public void clearSwatchColor() {
-        swatchColor = null;
-    }
 
     @Nullable
     @Override

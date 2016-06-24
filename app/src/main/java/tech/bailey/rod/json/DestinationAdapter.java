@@ -9,7 +9,7 @@ import java.util.List;
 import tech.bailey.rod.R;
 
 /**
- * Created by rodbailey on 21/06/2016.
+ * Adapts an array of destination names (strings) to a spinner in scenario 2.
  */
 public class DestinationAdapter extends ArrayAdapter<String> {
 

@@ -17,20 +17,22 @@ import com.viewpagerindicator.CirclePageIndicator;
 import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
 
-
+/**
+ * The View that constitutes the entire body of the "Scenario 1" tab.
+ */
 public class Scenario1Fragment extends Fragment implements IScenario1View {
 
     private static final String TAG = Scenario1Fragment.class.getSimpleName();
-
-    private View fillColorView;
-
-    private TextView itemTextView;
 
     private final IScenario1Presenter presenter;
 
     private final SwatchClickListener swatchClickListener = new SwatchClickListener();
 
     private final FillColorButtonClickListener fillColorButtonClickListener = new FillColorButtonClickListener();
+
+    private View fillColorView;
+
+    private TextView itemTextView;
 
     public Scenario1Fragment() {
         presenter = new Scenario1Presenter(this, AppDirectorSingleton.getInstance().getScenario1Model());
@@ -51,16 +53,6 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
     @Override
     public void clearItemText() {
         itemTextView.setText("");
-    }
-
-    @Override
-    public void setFillColor(String colorString) {
-        fillColorView.setBackgroundColor(Color.parseColor(colorString));
-    }
-
-    @Override
-    public void setItemText(@NonNull String text) {
-        itemTextView.setText(text);
     }
 
     @Nullable
@@ -105,23 +97,31 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
         return fragmentView;
     }
 
+    @Override
+    public void setFillColor(String colorString) {
+        fillColorView.setBackgroundColor(Color.parseColor(colorString));
+    }
+
+    @Override
+    public void setItemText(@NonNull String text) {
+        itemTextView.setText(text);
+    }
+
+    /** Notifies presenter when a swatch is clicked */
     private class SwatchClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            Log.i(TAG, "onClick: view.tag=" + view.getTag());
             NamedColor clickedColor = NamedColor.valueOf((String) view.getTag());
-            Log.i(TAG, "clickedColor=" + clickedColor);
             presenter.swatchPressed(clickedColor);
         }
     }
 
+    /** Notififes presenter when a fill colour button is clicked */
     private class FillColorButtonClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Log.i(TAG, "onClick: view.tag=" + view.getTag());
             NamedColor clickedColor = NamedColor.valueOf((String) view.getTag());
-            Log.i(TAG, "clickedColor=" + clickedColor);
             presenter.fillColorButtonPressed(clickedColor);
         }
     }

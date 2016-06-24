@@ -3,10 +3,11 @@ package tech.bailey.rod.scenario1;
 import android.support.annotation.NonNull;
 
 /**
- * This interface must be implemented by any party wanting to present an IScenario1View
+ * This interface must be implemented by any party wanting to present an IScenario1View. It
+ * receives messages from a corresponding view whenever some significant user event occurs.
+ * This presenter coordinates two parties - an IScenario1.View and an IScenario1Model
  */
 public interface IScenario1Presenter {
-
 
     /**
      * Invoked when one of the buttons for setting the background fill color of the bottom-most

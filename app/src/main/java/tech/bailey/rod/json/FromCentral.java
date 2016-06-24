@@ -1,7 +1,7 @@
 package tech.bailey.rod.json;
 
 /**
- * POJO equivalent of value of the the "fromcentral" property of a Destination
+ * POJO equivalent of value of the the "fromcentral" property of a Destination JSON object
  */
 public class FromCentral {
     public String car;

@@ -12,7 +12,9 @@ import android.widget.Toast;
 import tech.bailey.rod.R;
 
 /**
- * Created by rodbailey on 22/06/2016.
+ * A single 'page' inside one of the cards in the Scenario 1 view that has horizontally scrollable
+ * pages with a page indicator underneath. Fragment contains a simple text view with text like
+ * "Page 1 of 4".
  */
 public class NumberedFragment extends Fragment {
 
@@ -30,6 +32,13 @@ public class NumberedFragment extends Fragment {
         // Empty
     }
 
+    /**
+     * Static creation of configured, NumberedFragment.
+     *
+     * @param thisFragmentNumber One-based index of this page amongst all pages it is presented with
+     * @param totalFragments     Total number of fragments in the pager, including this one.
+     * @return Newly created Fragment.
+     */
     public static NumberedFragment newInstance(int thisFragmentNumber, int totalFragments) {
         NumberedFragment result = new NumberedFragment();
 
@@ -59,22 +68,27 @@ public class NumberedFragment extends Fragment {
         fragmentView.setOnClickListener(new FragmentClickListener());
 
         TextView numberText = (TextView) fragmentView.findViewById(R.id.fragment_number_text);
-        numberText.setText(String.format("Page %d of %d", thisFragmentNumber, totalFragments));
+        String formatString = getResources().getString(R.string.scenario_1_page_title);
+        numberText.setText(String.format(formatString, thisFragmentNumber, totalFragments));
 
         return fragmentView;
     }
 
+    /**
+     * Listens for a click on this fragment and responds by raising a Toast saying "Page X of Y".
+     */
     private class FragmentClickListener implements View.OnClickListener {
 
         @Override
         public void onClick(View view) {
-            // To save time I am raising the Toast here directly. But this is short-cicuiting the
+            // To save time I am raising the Toast here directly. But this is short-circuiting the
             // architecture. To do it properly we would send a message to the presenter to indicate
             // that the fragment had been clicked. Then that info would be communicated to the model
             // which would eventually result in a message reaching the IScenario1View which would
             // raise the Toast.
-            String toastText = String.format("Page %d of %d", thisFragmentNumber, totalFragments);
-            Toast.makeText(getContext(),toastText, Toast.LENGTH_SHORT).show();
+            String formatString = getResources().getString(R.string.scenario_1_page_title);
+            String toastText = String.format(formatString, thisFragmentNumber, totalFragments);
+            Toast.makeText(getContext(), toastText, Toast.LENGTH_SHORT).show();
         }
     }
 }

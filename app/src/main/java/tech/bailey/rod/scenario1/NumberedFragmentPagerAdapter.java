@@ -5,7 +5,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 /**
- *
+ * Vends instances of NumberedFragment
  */
 public class NumberedFragmentPagerAdapter extends FragmentPagerAdapter {
 

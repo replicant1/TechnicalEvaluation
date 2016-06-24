@@ -1,5 +1,7 @@
 package tech.bailey.rod.scenario1;
 
+import android.support.annotation.NonNull;
+
 /**
  * These color names/hex codes are taken from the standard X11 color set.
  */
@@ -17,7 +19,7 @@ public enum NamedColor {
 
     private String colorString;
 
-    NamedColor(String name, String colorString) {
+    NamedColor(@NonNull String name, @NonNull String colorString) {
         this.name = name;
         this.colorString = colorString;
     }
