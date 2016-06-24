@@ -12,7 +12,7 @@ import tech.bailey.rod.json.Destination;
 public interface ITravelTimeService {
 
     /**
-     * Kicks off asynchronous loading of travel times data.
+     * Kicks off asynchronous loading of travel times data. Callbacks occur in the main thread.
      *
      * @param successHandler Once loaded and parsed OK, the data is passed back to this party
      * @param failureHandler If data can't be loaded or parsed, for any reason, this party is

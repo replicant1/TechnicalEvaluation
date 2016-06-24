@@ -22,21 +22,18 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.gson.Gson;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import tech.bailey.rod.R;
-import tech.bailey.rod.app.MainModel;
-import tech.bailey.rod.json.Destination;
+import tech.bailey.rod.app.AppDirectorSingleton;
 import tech.bailey.rod.json.DestinationAdapter;
 
-
+/**
+ * Implementation of the IScenario2View in the form of a Fragment. This view should be kept as
+ * simple and as dumb as possible. Defer as much logic/functionality as possible to the
+ * corresponding IScenario2Presenter that is presenting this view.
+ */
 public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     private static final String TAG = Scenario2Fragment.class.getSimpleName();
@@ -72,11 +69,16 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private ListView travelTimesList;
 
     public Scenario2Fragment() {
-
+        // Empty
     }
 
     public static Scenario2Fragment newInstance() {
         return new Scenario2Fragment();
+    }
+
+    @Override
+    public void hideDestinationSelectionPanel() {
+        destinationCard.setVisibility(View.GONE);
     }
 
     @Override
@@ -86,10 +88,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void hideProgressPanel() {
-        Log.i(TAG, "=== hideProgressPanel and make destinationCard visible");
-//        progressMonitor.setVisibility(View.GONE);
-//        destinationCard.setVisibility(View.VISIBLE);
-//        mapCard.setVisibility(View.GONE);
+        progressMonitor.setVisibility(View.GONE);
     }
 
     @Nullable
@@ -104,11 +103,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         progressBar = (ProgressBar) fragmentView.findViewById(R.id.scenario_2_progress_bar);
         progressMessage = (TextView) fragmentView.findViewById(R.id.scenario_2_progress_message);
         retryButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_retry);
-
-        // When first created, both cards are invisible and the progress monitor is visible
-//        progressMonitor.setVisibility(View.GONE);
-//        mapCard.setVisibility(View.GONE);
-//        destinationCard.setVisibility(View.GONE);
+        retryButton.setOnClickListener(new RetryButtonOnClickListener());
 
         destinationSpinner = (Spinner) fragmentView.findViewById(R.id.scenario_2_destination_spinner);
         destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
@@ -117,7 +112,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         navigateButton = (Button) fragmentView.findViewById(R.id.scenario_2_button_navigate);
         navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
-
 
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
 
@@ -144,14 +138,18 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         // (e.g. if the destinations have already been read in, as happens when using the
         // FakeTravelTimeService), and we don't want to try and update views that have not
         // yet been created.
-        presenter = new Scenario2Presenter(this, MainModel.getInstance().getScenario2Model());
+        IScenario2Model model = AppDirectorSingleton.getInstance().getScenario2Model();
+        presenter = new Scenario2Presenter(this,model);
+
+        // Initial state is with progress monitor showing and everything else hidden
+        hideMap();
+        hideDestinationSelectionPanel();
+        showProgressPanel(ProgressPanelMode.MODE_INDETERMINATE_PROGRESS, "Loading travel times...");
     }
 
     @Override
     public void setDestinationNames(@NonNull List<String> destinationNames) {
-        progressMonitor.setVisibility(View.GONE);
-        destinationCard.setVisibility(View.VISIBLE);
-        mapCard.setVisibility(View.GONE);
+        hideProgressPanel();
 
         DestinationAdapter adapter = new DestinationAdapter( //
                 getActivity(), //
@@ -160,7 +158,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         destinationSpinner.setAdapter(adapter);
 
         // Spinners do not allow "no selection", so after repopulating the list
-        // of available choices, we automatically select the first itme in the list
+        // of available choices, we automatically select the first item in the list
         setSelectedDestinationName(destinationNames.get(0));
     }
 
@@ -192,6 +190,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
+    public void showDestinationSelectionPanel() {
+        destinationCard.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void showMap(float latitude, float longitude) {
         mapCard.setVisibility(View.VISIBLE);
 
@@ -200,15 +203,28 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
             googleMap.addMarker(new MarkerOptions().position(location));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
         } else {
+            // NOTE Would be better to poll repeatedly until map is ready rather than
+            // just do nothing.
             Log.w(TAG, "showMap was called before map was ready");
         }
     }
 
     @Override
-    public void showProgressPanel(boolean progressMessage, boolean allowRetry) {
-//        mapCard.setVisibility(View.GONE);
-//        destinationCard.setVisibility(View.GONE);
-//        progressMonitor.setVisibility(View.VISIBLE);
+    public void showProgressPanel(ProgressPanelMode mode, String message) {
+        progressMonitor.setVisibility(View.VISIBLE);
+        progressMessage.setText(message);
+
+        switch (mode) {
+            case MODE_FAILURE:
+                progressBar.setVisibility(View.GONE);
+                retryButton.setVisibility(View.VISIBLE);
+                break;
+
+            case MODE_INDETERMINATE_PROGRESS:
+                progressBar.setVisibility(View.VISIBLE);
+                retryButton.setVisibility(View.GONE);
+                break;
+        }
     }
 
     private class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
@@ -243,6 +259,14 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         @Override
         public void onClick(View view) {
             presenter.hideMapButtonPressed();
+        }
+    }
+
+    private class RetryButtonOnClickListener implements View.OnClickListener {
+        @Override
+        public void onClick(View view) {
+            Log.i(TAG, "Into RetryButtonOnClickListener.onClick");
+            presenter.retryButtonPressed();
         }
     }
 }

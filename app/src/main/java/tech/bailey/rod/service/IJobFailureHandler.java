@@ -1,9 +1,12 @@
 package tech.bailey.rod.service;
 
 /**
- * Created by rodbailey on 23/06/2016.
+ * Handles unsuccessful execution of an asynchronous network operation ('job')
  */
 public interface IJobFailureHandler {
 
+    /**
+     * @param failureReason Displayable reason for the failure of the operation
+     */
     public void onJobFailure(String failureReason);
 }

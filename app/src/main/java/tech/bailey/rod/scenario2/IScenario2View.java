@@ -20,6 +20,10 @@ import java.util.List;
  */
 public interface IScenario2View {
 
+    public enum ProgressPanelMode {
+        MODE_INDETERMINATE_PROGRESS, MODE_FAILURE;
+    }
+
     public void setDestinationNames(@NonNull List<String> destinationNames);
 
     public void setSelectedDestinationName(String destinationName);
@@ -30,8 +34,12 @@ public interface IScenario2View {
 
     public void hideMap();
 
-    public void showProgressPanel(boolean progressMessgae, boolean allowRetry);
+    public void showProgressPanel(ProgressPanelMode mode, String message);
 
     public void hideProgressPanel();
+
+    public void showDestinationSelectionPanel();
+
+    public void hideDestinationSelectionPanel();
 
 }

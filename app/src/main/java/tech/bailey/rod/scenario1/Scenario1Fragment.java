@@ -15,7 +15,7 @@ import android.widget.TextView;
 import com.viewpagerindicator.CirclePageIndicator;
 
 import tech.bailey.rod.R;
-import tech.bailey.rod.app.MainModel;
+import tech.bailey.rod.app.AppDirectorSingleton;
 
 
 public class Scenario1Fragment extends Fragment implements IScenario1View {
@@ -33,7 +33,7 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
     private final FillColorButtonClickListener fillColorButtonClickListener = new FillColorButtonClickListener();
 
     public Scenario1Fragment() {
-        presenter = new Scenario1Presenter(this, MainModel.getInstance().getScenario1Model());
+        presenter = new Scenario1Presenter(this, AppDirectorSingleton.getInstance().getScenario1Model());
     }
 
     /**

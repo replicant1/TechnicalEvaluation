@@ -1,5 +1,6 @@
 package tech.bailey.rod.app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -10,17 +11,17 @@ import android.util.Log;
 import java.util.List;
 
 import tech.bailey.rod.R;
+import tech.bailey.rod.bus.DestinationsLoadFailureEvent;
+import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
-import tech.bailey.rod.scenario1.IScenario1Model;
-import tech.bailey.rod.scenario1.Scenario1Model;
-import tech.bailey.rod.scenario2.IScenario2Model;
-import tech.bailey.rod.scenario2.Scenario2Model;
 import tech.bailey.rod.service.FakeTravelTimeService;
 import tech.bailey.rod.service.IJobFailureHandler;
 import tech.bailey.rod.service.IJobSuccessHandler;
 import tech.bailey.rod.service.ITravelTimeService;
 
 public class MainActivity extends AppCompatActivity {
+
+    public static final int SCENARIO_2_TAB_INDEX = 1;
 
     private static final String TAG = MainActivity.class.getSimpleName();
 
@@ -55,57 +56,39 @@ public class MainActivity extends AppCompatActivity {
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(mViewPager);
 
-        mViewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-                // Empty
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                Log.i(TAG, "==== onPageSelected position = " + position + "  ====");
-                // If user selected "Scenario 2" tab and we haven't previously loaded the
-                // travel times, start loading them asynchronously now.
-                if (position == 1) {
-                    if (MainModel.getInstance().getScenario2Model().getDestinations() == null) {
-                        loadTravelTimes();
-                    }
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                // Empty
-            }
-        });
-
+        mViewPager.addOnPageChangeListener(new ScenarioTabChangeListener(this));
     }
 
-    private void loadTravelTimes() {
-        Log.i(TAG, "==== INto loadTravelTimes ====");
 
-        // Note: Could use dependency injection to sway between fake
-        // and real impl's of ITravelTimeService.
-        ITravelTimeService service = new FakeTravelTimeService(this);
+    private class ScenarioTabChangeListener implements ViewPager.OnPageChangeListener {
 
-        service.getTravelTimes(
-                new IJobSuccessHandler<List<Destination>>() {
-                    @Override
-                    public void onJobSuccess(List<Destination> result) {
-                        Log.i(TAG, "Into success handler");
-                        for (Destination destination : result) {
-                            Log.i(TAG, "destination: " + destination);
-                        }
-                        MainModel.getInstance().getScenario2Model().setDestinations(result);
-                    }
-                },
-                new IJobFailureHandler() {
-                    @Override
-                    public void onJobFailure(String failureReason) {
-                        Log.e(TAG, "Failed to load travel times: " + failureReason);
-                    }
+        private final Context context;
+
+        public ScenarioTabChangeListener(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            // Empty
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            // Empty
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            Log.i(TAG, "==== onPageSelected position = " + position + "  ====");
+            // If user selected "Scenario 2" tab and we haven't previously loaded the
+            // travel times, start loading them asynchronously now.
+            if (position == SCENARIO_2_TAB_INDEX) {
+                AppDirectorSingleton app = AppDirectorSingleton.getInstance();
+                if (app.getScenario2Model().getDestinations() == null) {
+                    app.loadTravelTimeData(context);
                 }
-        );
+            }
+        }
     }
-
 }

@@ -14,10 +14,19 @@ import java.util.List;
 import tech.bailey.rod.json.Destination;
 
 /**
- * An implementation of ITravelTimeService that is suitable for local testing. Returns dummy data.
+ * An implementation of ITravelTimeService that is suitable for local testing. Returns dummy data
+ * read from /assets/sample.json with a delay of a few seconds artificially created to simulate
+ * network latency.
  */
 public class FakeTravelTimeService implements ITravelTimeService {
+
     private static final String TAG = FakeTravelTimeService.class.getSimpleName();
+
+    private static final String SAMPLE_JSON_ASSET = "sample.json";
+
+    private static final long MILLIS_FAKE_DELAY = 5000;
+
+    public static final boolean OPERATION_SUCCEEDS = false;
 
     private final Context context;
 
@@ -29,7 +38,7 @@ public class FakeTravelTimeService implements ITravelTimeService {
     public void getTravelTimes(final IJobSuccessHandler<List<Destination>> successHandler,
                                IJobFailureHandler failureHandler) {
 
-        ConsumeTimeJob job = new ConsumeTimeJob(
+        FakeNetworkAccessJob job = new FakeNetworkAccessJob(
 
                 new IJobSuccessHandler() {
                     @Override
@@ -38,7 +47,8 @@ public class FakeTravelTimeService implements ITravelTimeService {
                         StringBuffer buffer = new StringBuffer();
 
                         try {
-                            reader = new BufferedReader(new InputStreamReader(context.getAssets().open("sample.json")));
+                            reader = new BufferedReader(new InputStreamReader(
+                                    context.getAssets().open(SAMPLE_JSON_ASSET)));
 
                             String line;
                             while ((line = reader.readLine()) != null) {
@@ -60,13 +70,14 @@ public class FakeTravelTimeService implements ITravelTimeService {
 
                         // Use Google's GSON library to parse the JSON
                         Gson gson = new Gson();
-                        Destination[] destinationArray = gson.fromJson(jsonString, new Destination[0].getClass());
+                        Destination[] destinationArray = gson.fromJson(
+                                jsonString, new Destination[0].getClass());
                         List<Destination> destinationList = Arrays.asList(destinationArray);
 
                         successHandler.onJobSuccess(destinationList);
                     }
                 }
-                , failureHandler, 5000, true);
+                , failureHandler, MILLIS_FAKE_DELAY, OPERATION_SUCCEEDS);
         job.execute();
     }
 }

@@ -1,7 +1,8 @@
 package tech.bailey.rod.scenario2;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
@@ -9,7 +10,9 @@ import com.squareup.otto.Subscribe;
 import java.util.LinkedList;
 import java.util.List;
 
-import tech.bailey.rod.bus.DestinationsUpdatedEvent;
+import tech.bailey.rod.app.AppDirectorSingleton;
+import tech.bailey.rod.bus.DestinationsLoadFailureEvent;
+import tech.bailey.rod.bus.DestinationsLoadSuccessEvent;
 import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
@@ -93,14 +96,20 @@ public class Scenario2Presenter implements IScenario2Presenter {
 
     @Override
     public void retryButtonPressed() {
-
+        scenario2View.showProgressPanel(
+                IScenario2View.ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
+                "Loading travel times...");
+        // TODO REplace this clumsiness with a global means of accessing the Context
+        Context context = ((Fragment) scenario2View).getContext();
+        AppDirectorSingleton.getInstance().loadTravelTimeData(context);
     }
 
     @Subscribe
-    public void onBusEvent(DestinationsUpdatedEvent event) {
+    public void onBusEvent(DestinationsLoadSuccessEvent event) {
         Log.i(TAG, "==============================================");
         Log.i(TAG, "===== Into Scenario2Presenter.onBusEvent =====");
         Log.i(TAG, "==== event.getDestinations=" + event.getDestinations());
+
         if (event.getDestinations() != null) {
             Log.i(TAG, "==== #destinations=" + event.getDestinations().size());
             List<String> names = new LinkedList<String>();
@@ -109,11 +118,26 @@ public class Scenario2Presenter implements IScenario2Presenter {
             }
 
             scenario2View.setDestinationNames(names);
+            scenario2View.hideProgressPanel();
+            scenario2View.hideMap();
+            scenario2View.showDestinationSelectionPanel();
         }
         else {
             Log.i(TAG, "==== destinations=null");
         }
 
         Log.i(TAG, "==============================================");
+    }
+
+    @Subscribe
+    public void onBusEvent(DestinationsLoadFailureEvent event) {
+        Log.i(TAG, "==============================");
+        Log.i(TAG, " Into Scenario2Presenter.onBusEvent: DestinationsLoadFailureEVent");
+
+        scenario2View.hideMap();
+        scenario2View.hideDestinationSelectionPanel();
+        scenario2View.showProgressPanel(
+                IScenario2View.ProgressPanelMode.MODE_FAILURE, event.getFailureReason());
+
     }
 }
