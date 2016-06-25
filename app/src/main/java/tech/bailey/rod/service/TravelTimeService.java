@@ -1,8 +1,11 @@
 package tech.bailey.rod.service;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -23,6 +26,9 @@ import tech.bailey.rod.util.JsonUtils;
 public class TravelTimeService implements ITravelTimeService {
 
     public static final String JSON_URL = ConfigSingleton.getInstance().TravelTimeServiceUrl();
+
+    private static final int INITIAL_TIMEOUT_MS =
+            ConfigSingleton.getInstance().TraveTimeServiceTimeoutMillis();
 
     /**
      * Not only is this string used as the tag for each log statement, is is used as the 'tag'
@@ -47,6 +53,10 @@ public class TravelTimeService implements ITravelTimeService {
                 new GetTravelTimesResponseListener(successHandler), //
                 new GetTravelTimesErrorListener(failureHandler)); //
         request.setTag(TAG);
+        request.setRetryPolicy(new DefaultRetryPolicy(INITIAL_TIMEOUT_MS, 0, 0));
+
+        Log.i(TAG, "Launching asynch request for travel times data");
+
         requestQueue.add(request);
     }
 
@@ -59,6 +69,7 @@ public class TravelTimeService implements ITravelTimeService {
 
         @Override
         public void onResponse(String response) {
+            Log.i(TAG, "GetTravelTimesresponseListener success!!");
             success.onJobSuccess(JsonUtils.parseDestinationArray(response));
         }
     }
@@ -72,6 +83,7 @@ public class TravelTimeService implements ITravelTimeService {
 
         @Override
         public void onErrorResponse(VolleyError error) {
+            Log.i(TAG, "GetTravelTimesErrorListener failure!");
             failureHandler.onJobFailure("Failed to load travel times.");
         }
     }

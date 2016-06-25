@@ -71,6 +71,10 @@ public class ConfigSingleton {
         return getBoolProperty("TravelTimeService.fake.succeeds");
     }
 
+    public int TraveTimeServiceTimeoutMillis() {
+        return getIntProperty("TravelTimeService.timeout.millis");
+    }
+
     private boolean getBoolProperty(String propertyName) {
         return Boolean.parseBoolean(configProperties.getProperty(propertyName));
     }
