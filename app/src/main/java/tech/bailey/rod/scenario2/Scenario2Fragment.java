@@ -144,7 +144,8 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         // Initial state is with progress monitor showing and everything else hidden
         hideMap();
         hideDestinationSelectionPanel();
-        showProgressPanel(ProgressPanelMode.MODE_INDETERMINATE_PROGRESS, "Loading travel times...");
+        showProgressPanel(ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
+                getString(R.string.scenario_2_progress_message));
     }
 
     @Override
@@ -230,7 +231,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            Log.i(TAG, "onItemSelected: view=" + view + ",position=" + position + ",id=" + id);
             TextView textView = (TextView) view;
             presenter.destinationNameSelected(textView.getText().toString());
         }
@@ -265,7 +265,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private class RetryButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
-            Log.i(TAG, "Into RetryButtonOnClickListener.onClick");
             presenter.retryButtonPressed();
         }
     }

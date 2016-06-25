@@ -1,7 +1,6 @@
 package tech.bailey.rod.scenario1;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 /**
  * Basic presenter impl for Scenario 1 tab. Note that this presenter does the model's work for it.
@@ -35,6 +34,16 @@ public class Scenario1Presenter implements IScenario1Presenter {
         // Alert view that model contents have changed
         NamedColor fillColor = scenario1Model.getFillColor();
         scenario1View.setFillColor(fillColor.getColorString());
+    }
+
+    @Override
+    public void pageSelected(int pageNumber) {
+        // Transmit new page selectio to mode
+        scenario1Model.setPageNumber(pageNumber);
+
+        // Alert view that model contents have changed
+        int newPageNumber = scenario1Model.getPageNumber();
+        scenario1View.setPageNumber(newPageNumber);
     }
 
     @Override

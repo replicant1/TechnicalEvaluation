@@ -18,6 +18,13 @@ public interface IScenario1Presenter {
     public void fillColorButtonPressed(@NonNull NamedColor buttonColor);
 
     /**
+     * Invoked when one of the numbered pages is selected in the ViewPager.
+     *
+     * @param page 1-based page number of selected page.
+     */
+    public void pageSelected(int pageNumber);
+
+    /**
      * Invoked when one of the swatches presented in the top card of the corresponding
      * IScenario1View is pressed.
      *

@@ -3,4 +3,5 @@
     <string name="scenario_1_tab_title">Scenario 1</string>
     <string name="scenario_2_tab_title">Scenario 2</string>
     <string name="scenario_1_page_title">Page %1$d of %2$d</string>
+    <string name="scenario_2_progress_message">Loading travel times...</string>
 </resources>

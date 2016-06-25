@@ -1,13 +1,16 @@
 package tech.bailey.rod.scenario1;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 
 /**
- * Contains all the view tate info about the Scenario 1 tab
+ * Contains all the view state info about the Scenario 1 tab
  */
 public class Scenario1Model implements IScenario1Model {
 
     private NamedColor fillColor;
+
+    private int pageNumber;
 
     private NamedColor swatchColor;
 
@@ -15,6 +18,11 @@ public class Scenario1Model implements IScenario1Model {
     @Override
     public NamedColor getFillColor() {
         return fillColor;
+    }
+
+    @Override
+    public int getPageNumber() {
+        return pageNumber;
     }
 
     @Nullable
@@ -26,6 +34,10 @@ public class Scenario1Model implements IScenario1Model {
     @Override
     public void setFillColor(@Nullable NamedColor fillColor) {
         this.fillColor = fillColor;
+    }
+
+    public void setPageNumber(int pageNumber) {
+        this.pageNumber = pageNumber;
     }
 
     @Override

@@ -9,16 +9,6 @@ import android.support.annotation.NonNull;
 public interface IScenario1View {
 
     /**
-     * Clears the background fill color of the bottom-most Card, resetting it to its default white.
-     */
-    public void clearFillColor();
-
-    /**
-     * Clears all text from the second-to-bottom Card
-     */
-    public void clearItemText();
-
-    /**
      * Sets the fill color used for the background of the bottom-most Card
      *
      * @param colorString A parsable color string as described in android.graphics.Color.parseColor.
@@ -33,4 +23,11 @@ public interface IScenario1View {
      * @param text Any displayable text. Keep it short.
      */
     public void setItemText(@NonNull String text);
+
+    /**
+     * Sets the numbered page that is currently showing
+     *
+     * @param page The page to show exclusively.
+     */
+    public void setPageNumber(int page);
 }
