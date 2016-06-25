@@ -23,7 +23,7 @@ public class ModeTravelTimesListAdapter extends ArrayAdapter<ModeTravelTime> {
     private final List<ModeTravelTime> modeTravelTimes;
 
     public ModeTravelTimesListAdapter(Context context, int resource, List<ModeTravelTime> modeTravelTimes) {
-        super(context, resource, R.id.mode_of_transport_travel_tine, modeTravelTimes);
+        super(context, resource, R.id.mode_of_transport_travel_time, modeTravelTimes);
         this.modeTravelTimes = modeTravelTimes;
     }
 
@@ -42,7 +42,7 @@ public class ModeTravelTimesListAdapter extends ArrayAdapter<ModeTravelTime> {
         View row = super.getView(position, convertView, parent);
 
         ImageView modeIcon = (ImageView) row.findViewById(R.id.mode_of_transport_icon);
-        TextView modeText = (TextView) row.findViewById(R.id.mode_of_transport_travel_tine);
+        TextView modeText = (TextView) row.findViewById(R.id.mode_of_transport_travel_time);
 
         ModeTravelTime modeTravelTime = modeTravelTimes.get(position);
 

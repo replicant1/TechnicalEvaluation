@@ -16,11 +16,12 @@
     <!-- Text of the travel time e.g. "53 Mins" -->
 
     <TextView
-        android:id="@+id/mode_of_transport_travel_tine"
+        android:id="@+id/mode_of_transport_travel_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginLeft="8dp"
+        android:textColor="@color/Gray"
         android:singleLine="true"/>
 
 </LinearLayout>
