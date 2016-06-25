@@ -28,7 +28,7 @@ Occupies full screen width.
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="RED"
-                android:text="Red"
+                android:text="@string/red_button_label"
                 android:textSize="12sp"/>
 
             <Button
@@ -38,7 +38,7 @@ Occupies full screen width.
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="GREEN"
-                android:text="Green"
+                android:text="@string/green_button_label"
                 android:textSize="12sp"/>
 
             <Button
@@ -48,7 +48,7 @@ Occupies full screen width.
                 android:layout_weight="1"
                 android:gravity="center"
                 android:tag="BLUE"
-                android:text="Blue"
+                android:text="@string/blue_button_label"
                 android:textSize="12sp"/>
 
         </LinearLayout>

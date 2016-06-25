@@ -30,7 +30,7 @@ Scenario 2 data.
             android:id="@+id/scenario_2_progress_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Loading travel times..."/>
+            android:text="@string/scenario_2_progress_message"/>
 
         <Button
             android:id="@+id/scenario_2_button_retry"

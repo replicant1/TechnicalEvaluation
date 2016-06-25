@@ -4,4 +4,13 @@
     <string name="scenario_2_tab_title">Scenario 2</string>
     <string name="scenario_1_page_title">Page %1$d of %2$d</string>
     <string name="scenario_2_progress_message">Loading travel times...</string>
+    <string name="red_button_label">Red</string>
+    <string name="blue_button_label">Blue</string>
+    <string name="green_button_label">Green</string>
+    <string name="vertical_alignment_top">Top</string>
+    <string name="vertical_alignment_center">Center</string>
+    <string name="vertical_alignment_bottom">Bottom</string>
+    <string name="destination_spinner_label">Destination:</string>
+    <string name="travel_times_heading">Travel times from Central:</string>
+    <string name="navigate_button_label">Navigate</string>
 </resources>
