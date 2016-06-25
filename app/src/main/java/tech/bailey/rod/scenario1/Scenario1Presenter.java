@@ -11,12 +11,13 @@ import tech.bailey.rod.scenario1.event.PageNumberPropertyChangedEvent;
 import tech.bailey.rod.scenario1.event.SwatchColorPropertyChangedEvent;
 
 /**
- * Basic presenter impl for Scenario 1 tab. Note that this presenter does the model's work for it.
- * Instead of simply notifying the model of the state change and letting the model fire events which
- * eventually result in view updates, this presenter makes the view updates itself, knowing that the
- * IScenario1Model it is associated with doesn't do event firing.</p>
- * I did this to save time and also to illustrate a shortcut that is possible when asynchrony is
- * not involved in the update cycle.
+ * Basic presenter impl for Scenario 1 tab.</p>
+ * This presenter subscribes to the following events:
+ * <ul>
+ *     <li>FillColorPropertyChangedEvent</li>
+ *     <li>PageNumberPropertyChangedEvent</li>
+ *     <li>SwatchColorPropertyChangedEvent</li>
+ * </ul>
  */
 public class Scenario1Presenter implements IScenario1Presenter {
 

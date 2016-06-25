@@ -14,7 +14,13 @@ import tech.bailey.rod.scenario1.event.PageNumberPropertyChangedEvent;
 import tech.bailey.rod.scenario1.event.SwatchColorPropertyChangedEvent;
 
 /**
- * Contains all the view state info about the Scenario 1 tab
+ * Contains all the view state info about the Scenario 1 tab. This model broadcasts the following
+ * events:
+ * <ul>
+ *     <li>FillColorPropertyChangedEvent</li>
+ *     <li>SwatchColorPropertyChangedEvent</li>
+ *     <li>PageNumberPropertyChangedEvent</li>
+ * </ul>
  */
 public class Scenario1Model implements IScenario1Model {
 

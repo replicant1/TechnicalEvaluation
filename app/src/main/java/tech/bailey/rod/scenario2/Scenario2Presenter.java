@@ -9,18 +9,22 @@ import java.util.LinkedList;
 import java.util.List;
 
 import tech.bailey.rod.R;
-import tech.bailey.rod.app.AppDirectorSingleton;
 import tech.bailey.rod.app.TechnicalEvaluationApplication;
-import tech.bailey.rod.scenario2.event.DestinationsLoadFailureEvent;
-import tech.bailey.rod.scenario2.event.DestinationsLoadSuccessEvent;
 import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
+import tech.bailey.rod.scenario2.event.DestinationListPropertyChangedEvent;
+import tech.bailey.rod.scenario2.event.LoadingConditionPropertyChangedEvent;
+import tech.bailey.rod.scenario2.event.MapVisibilityPropertyChangedEvent;
+import tech.bailey.rod.scenario2.event.SelectedDestinationPropertyChangedEvent;
 
 /**
- * Presentation layer for Scenario2View.
- *
- * @see IScenario2Presenter
- * @see IScenario2View
+ * Presentation layer for Scenario2View. This presenter subscribes to the following events:
+ * <ul>
+ * <li>DestinationsLoadFailureEvent</li>
+ * <li>DestinationsLoadSuccessEvent</li>
+ * <li>MapVisibilityPropertyChangedEvent</li>
+ * <li>SelectedDestinationPropertyChangedEvent</li>
+ * </ul>
  */
 public class Scenario2Presenter implements IScenario2Presenter {
 
@@ -38,6 +42,8 @@ public class Scenario2Presenter implements IScenario2Presenter {
 
     @Override
     public void destinationNameSelected(String destinationName) {
+        Log.i(TAG, "destinationNameSelected: " + destinationName);
+
         // Transmit newly selected destination to model
         scenario2Model.setSelectedDestinationByName(destinationName);
 
@@ -68,30 +74,75 @@ public class Scenario2Presenter implements IScenario2Presenter {
     }
 
     @Override
-    public void navigateButtonPressed() {
-        // Make the map show, even if it is already showing
-        scenario2Model.setMapIsShowing(true);
-
-        // Alert view that the model has changed
-        Destination selectedDestination = scenario2Model.getSelectedDestination();
-        if (selectedDestination != null) {
-            float latitude = selectedDestination.location.latitude;
-            float longitude = selectedDestination.location.longitude;
-            scenario2View.showMap(latitude, longitude);
-        } else {
-            // This should never happen as the Navigate button should be disabled
-            // whenever there is not a currently selected Destination.
-            Log.e(TAG, "Code should be unreachable");
-        }
-    }
-
-    @Override
     public void hideMapButtonPressed() {
         // Hide the map, even if it is already hidden
         scenario2Model.setMapIsShowing(false);
+    }
 
-        // Alert the view that the model has changed
-        scenario2View.hideMap();
+    @Override
+    public void navigateButtonPressed() {
+        // Make the map show, even if it is already showing
+        scenario2Model.setMapIsShowing(true);
+    }
+
+    @Subscribe
+    public void onBusEvent(LoadingConditionPropertyChangedEvent event) {
+        Log.i(TAG, hashCode() + " Into onBusEvent(LoadingCondPCE) event.cond=" + event.getLoadingCondition());
+
+        switch (event.getLoadingCondition()) {
+            case DESTINATIONS_LOADED_OK:
+                scenario2View.hideProgressPanel();
+                scenario2View.hideMap();
+                scenario2View.showDestinationSelectionPanel();
+                break;
+
+            case DESTINATIONS_LOADING_FAILED:
+                scenario2View.hideMap();
+                scenario2View.hideDestinationSelectionPanel();
+                scenario2View.showProgressPanel(
+                        IScenario2View.ProgressPanelMode.MODE_FAILURE,
+                        "Failed to load travel times.");
+                break;
+
+            case DESTINATIONS_LOADING_IN_PROGRESS:
+                scenario2View.hideMap();
+                scenario2View.hideDestinationSelectionPanel();
+                scenario2View.showProgressPanel(
+                        IScenario2View.ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
+                        "Loading travel times...");
+                break;
+        }
+    }
+
+    @Subscribe
+    public void onBusEvent(DestinationListPropertyChangedEvent event) {
+        Log.i(TAG, hashCode() + " onBusEvent(DestinationListPCE) event.dest=" + event.getDestinations());
+
+        if (event.getDestinations() != null) {
+            List<String> names = new LinkedList<String>();
+            for (Destination dest : event.getDestinations()) {
+                names.add(dest.name);
+            }
+            scenario2View.setDestinationNames(names);
+        }
+    }
+
+    @Subscribe
+    public void onBusEvent(MapVisibilityPropertyChangedEvent event) {
+        if (event.isMapVisible()) {
+            scenario2View.showMap(event.getLatitude(), event.getLongitude());
+        } else {
+            scenario2View.hideMap();
+        }
+    }
+
+    @Subscribe
+    public void onBusEvent(SelectedDestinationPropertyChangedEvent event) {
+        Log.i(TAG, hashCode() + " onBusEvent(SelectedDestinationPCE) event.selectedDestination=" + event.getSelectedDestination());
+        Destination destination = event.getSelectedDestination();
+        if (destination != null) {
+            scenario2View.setSelectedDestinationName(destination.name);
+        }
     }
 
     @Override
@@ -100,33 +151,6 @@ public class Scenario2Presenter implements IScenario2Presenter {
                 IScenario2View.ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
                 TechnicalEvaluationApplication.context.getString(
                         R.string.scenario_2_progress_message));
-        AppDirectorSingleton.getInstance().loadTravelTimeData();
-    }
-
-    @Subscribe
-    public void onBusEvent(DestinationsLoadSuccessEvent event) {
-        Log.i(TAG, "onBusEvent(DestinatiosLoadSuccessEvent event.destinations=" +
-                event.getDestinations());
-
-        if (event.getDestinations() != null) {
-            List<String> names = new LinkedList<String>();
-            for (Destination destination : event.getDestinations()) {
-                names.add(destination.name);
-            }
-
-            scenario2View.setDestinationNames(names);
-            scenario2View.hideProgressPanel();
-            scenario2View.hideMap();
-            scenario2View.showDestinationSelectionPanel();
-        }
-    }
-
-    @Subscribe
-    public void onBusEvent(DestinationsLoadFailureEvent event) {
-        scenario2View.hideMap();
-        scenario2View.hideDestinationSelectionPanel();
-        scenario2View.showProgressPanel(
-                IScenario2View.ProgressPanelMode.MODE_FAILURE, event.getFailureReason());
-
+        scenario2Model.loadDestinationsAsync();
     }
 }

@@ -29,6 +29,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
+import tech.bailey.rod.app.TechnicalEvaluationApplication;
+import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.DestinationAdapter;
 
 /**
@@ -103,6 +105,12 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         progressMonitor.setVisibility(View.GONE);
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        Log.i(TAG, hashCode() + " @@ onCreate");
+        super.onCreate(savedInstanceState);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -141,32 +149,35 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         IScenario2Model model = AppDirectorSingleton.getInstance().getScenario2Model();
         presenter = new Scenario2Presenter(this, model);
 
-        // Initial state is with progress monitor showing and everything else hidden
-        hideMap();
-        hideDestinationSelectionPanel();
-        showProgressPanel(ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
-                getString(R.string.scenario_2_progress_message));
+        Log.i(TAG, hashCode() + " @@ onViewCreated: new prsenter is " + presenter.hashCode());
     }
 
     @Override
     public void setDestinationNames(@NonNull List<String> destinationNames) {
-        hideProgressPanel();
-
+        Log.i(TAG, "setDestinationNames: " + destinationNames);
         DestinationAdapter adapter = new DestinationAdapter( //
-                getActivity(), //
+                TechnicalEvaluationApplication.context, //
                 R.layout.destination_name_spinner_dropdown_item, //
                 destinationNames); //
         destinationSpinner.setAdapter(adapter);
 
         // Spinners do not allow "no selection", so after repopulating the list
         // of available choices, we automatically select the first item in the list
-        setSelectedDestinationName(destinationNames.get(0));
+//        if (presenter != null) {
+//            if (destinationSpinner.getTag() != null) {
+//                String pendingSelection = (String) destinationSpinner.getTag();
+//                destinationSpinner.setTag(null);
+//                setSelectedDestinationName(pendingSelection);
+//            } else {
+//                presenter.destinationNameSelected(destinationNames.get(0));
+//            }
+//        }
     }
 
     @Override
     public void setModeTravelTimes(List<ModeTravelTime> modeTravelTimes) {
         ModeTravelTimesListAdapter adapter = new ModeTravelTimesListAdapter( //
-                getActivity(), //
+                TechnicalEvaluationApplication.context, //
                 R.layout.adapter_mode_travel_time, //
                 modeTravelTimes); //
         travelTimesList.setAdapter(adapter);
@@ -174,19 +185,35 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void setSelectedDestinationName(String destinationName) {
+        Log.i(TAG, hashCode() + " setSelectedDestinationName: " + destinationName);
+
         // Find out what index this item has
         int selectedIndex = -1;
 
-        for (int i = 0; i < destinationSpinner.getAdapter().getCount(); i++) {
-            String name = (String) destinationSpinner.getAdapter().getItem(i);
-            if (destinationName.equals(name)) {
-                selectedIndex = i;
-            }
-        }
+        // Sometimes the selected destination name will be set before the adapter
+        // in the destinationSpinner has been created (it is not created until the list of
+        // destinations has been set). This depends on order of arrival of events on the Otto
+        // event bus, which is unpredictable. When this occurs, we store the selected name in
+        // the tag of the spinner. When the list of destinations finally
+        // arrives, and the spinner adapter created, *then* we apply the pending selection.
+        // Note: An event bus which allowed ordering or prioritizing of events would make this
+        // unncessary.
 
-        if (selectedIndex != -1) {
-            destinationSpinner.setSelection(selectedIndex);
-            navigateButton.setEnabled(true);
+        if (destinationSpinner.getAdapter() == null) {
+            destinationSpinner.setTag(destinationName);
+        } else {
+
+            for (int i = 0; i < destinationSpinner.getAdapter().getCount(); i++) {
+                String name = (String) destinationSpinner.getAdapter().getItem(i);
+                if (destinationName.equals(name)) {
+                    selectedIndex = i;
+                }
+            }
+
+            if (selectedIndex != -1) {
+                destinationSpinner.setSelection(selectedIndex);
+                navigateButton.setEnabled(true);
+            }
         }
     }
 
@@ -212,34 +239,35 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
     @Override
     public void onResume() {
-        Log.i(TAG, "@@ onResume");
+        Log.i(TAG, hashCode() + " @@ onResume");
         super.onResume();
     }
 
     @Override
     public void onPause() {
-        Log.i(TAG, "@@ onPause");
+        Log.i(TAG, hashCode() + " @@ onPause");
         super.onPause();
     }
 
     @Override
     public void onStart() {
-        Log.i(TAG, "@@ onStart");
+        Log.i(TAG, hashCode() + " @@ onStart");
         super.onStart();
     }
 
     @Override
     public void onStop() {
-        Log.i(TAG, "@@ onStop");
+        Log.i(TAG, hashCode() + " @@ onStop");
         super.onStop();
     }
 
     @Override
     public void onDestroy() {
-        Log.i(TAG, "@@ onDestroy");
+        Log.i(TAG, hashCode() + " @@ onDestroy");
         super.onDestroy();
-    }
 
+        EventBusSingleton.getInstance().getBus().unregister(presenter);
+    }
 
     @Override
     public void showProgressPanel(ProgressPanelMode mode, String message) {
@@ -259,11 +287,17 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
         }
     }
 
+    /**
+     * Listens for user to select a new destination with the spinner, then transmits
+     * the newly selected destination to the presenter.
+     */
     private class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            TextView textView = (TextView) view;
-            presenter.destinationNameSelected(textView.getText().toString());
+            if (view != null) {
+                TextView textView = (TextView) view;
+                presenter.destinationNameSelected(textView.getText().toString());
+            }
         }
 
         @Override
@@ -278,6 +312,7 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private class NavigateButtonOnClickListener implements View.OnClickListener {
         @Override
         public void onClick(View view) {
+            Log.i(TAG, "NavigateButtonOnClickListener.onClick");
             presenter.navigateButtonPressed();
         }
     }

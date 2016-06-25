@@ -69,7 +69,7 @@ public class TravelTimeService implements ITravelTimeService {
 
         @Override
         public void onResponse(String response) {
-            Log.i(TAG, "GetTravelTimesresponseListener success!!");
+            Log.i(TAG, "GetTravelTimesresponseListener success!! response=" + response);
             success.onJobSuccess(JsonUtils.parseDestinationArray(response));
         }
     }

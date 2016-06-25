@@ -119,9 +119,8 @@ public class MainActivity extends AppCompatActivity {
             // If user selected "Scenario 2" tab and we haven't previously loaded the
             // travel times, start loading them asynchronously now.
             if (position == SCENARIO_2_TAB_INDEX) {
-                AppDirectorSingleton app = AppDirectorSingleton.getInstance();
-                if (app.getScenario2Model().getDestinations() == null) {
-                    app.loadTravelTimeData();
+                if (AppDirectorSingleton.getInstance().getScenario2Model().getDestinations() == null) {
+                    AppDirectorSingleton.getInstance().getScenario2Model().loadDestinationsAsync();
                 }
             }
         }

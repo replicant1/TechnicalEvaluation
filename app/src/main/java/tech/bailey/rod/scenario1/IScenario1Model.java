@@ -5,11 +5,11 @@ import android.support.annotation.Nullable;
 
 /**
  * This interface must be implemented by any party wanting to serve as the model for some
- * associated IScenario1Presenter. The moddel has the following properties:
+ * associated IScenario1Presenter. The model has the following properties:
  * <ul>
  * <li> Currently selected fill color (if any)</li>
  * <li> Currently selected swatch color (if any)</li>
- * <li> Currently selected page number (there is always one)</li>
+ * <li> Currently selected page number</li>
  * </ul>
  * Note that the text contents of the card that displays the current swatch color is not
  * modelled separately. It can be deduced from the value of the current swatch color.
