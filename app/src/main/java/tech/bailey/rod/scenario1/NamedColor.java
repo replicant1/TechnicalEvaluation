@@ -13,7 +13,8 @@ public enum NamedColor {
     DODGER_BLUE("Dodger Blue", "#1E90FF"), //
     RED("Red", "#FF0000"), //
     GREEN("Green", "#00FF00"), //
-    BLUE("Blue", "#0000FF");
+    BLUE("Blue", "#0000FF"), //
+    NULL_COLOR("Null", "#000000"); //
 
     private String name;
 
@@ -30,5 +31,18 @@ public enum NamedColor {
 
     public String getColorString() {
         return colorString;
+    }
+
+    public static NamedColor parseByColorString(@NonNull String colorString) {
+        NamedColor result = null;
+
+        for (NamedColor namedColor : NamedColor.values()) {
+            if (namedColor.getColorString().equals(colorString)) {
+                result = namedColor;
+                break;
+            }
+        }
+
+        return result;
     }
 }

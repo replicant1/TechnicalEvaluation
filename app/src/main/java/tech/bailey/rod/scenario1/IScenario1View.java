@@ -9,6 +9,16 @@ import android.support.annotation.NonNull;
 public interface IScenario1View {
 
     /**
+     * Sets the currently selected swatch color. This only changes the text
+     * that appears in the fourth card, not the horizontal scroll position of the
+     * panel containing the swatches.
+     *
+     * @param colorString A parsable color string as described in android.graphics.Color.parseColor.
+     *                    e.g. "#FA55D3", "red", "#FFAAB5C0"
+     */
+    public void setSwatchColor(@NonNull String colorString);
+
+    /**
      * Sets the fill color used for the background of the bottom-most Card
      *
      * @param colorString A parsable color string as described in android.graphics.Color.parseColor.

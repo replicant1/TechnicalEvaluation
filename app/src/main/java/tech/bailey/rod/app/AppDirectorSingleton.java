@@ -1,12 +1,8 @@
 package tech.bailey.rod.app;
 
-import android.content.Context;
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import java.util.List;
 
-import tech.bailey.rod.bus.DestinationsLoadFailureEvent;
+import tech.bailey.rod.scenario2.event.DestinationsLoadFailureEvent;
 import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 import tech.bailey.rod.scenario1.IScenario1Model;

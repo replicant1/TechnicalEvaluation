@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
+import tech.bailey.rod.scenario2.Scenario2Presenter;
 
 /**
  * The View that constitutes the entire body of the "Scenario 1" tab.
@@ -27,15 +28,19 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
     private static final String TAG = Scenario1Fragment.class.getSimpleName();
 
-    private final IScenario1Presenter presenter;
-
     private final SwatchClickListener swatchClickListener = new SwatchClickListener();
 
     private final FillColorButtonClickListener fillColorButtonClickListener = new FillColorButtonClickListener();
 
+    @BindView(R.id.scenario_1_button_blue)
+    Button blueButton;
+
     // The ViewGroup that contains the "Red","Green" and "Blue" buttons
     @BindView(R.id.scenario_1_row_5)
     View fillColorView;
+
+    @BindView(R.id.scenario_1_button_green)
+    Button greenButton;
 
     // The text view in the Card that shows the name associated with the currently selected
     // swatch.
@@ -47,6 +52,9 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
     @BindView(R.id.scenario_1_numbered_fragmen_circle_page_indicator)
     CirclePageIndicator pageIndicator;
+
+    @BindView(R.id.scenario_1_button_red)
+    Button redButton;
 
     @BindView(R.id.scenario_1_swatch_1)
     View swatch1;
@@ -63,17 +71,10 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
     @BindView(R.id.scenario_1_swatch_5)
     View swatch5;
 
-    @BindView(R.id.scenario_1_button_red)
-    Button redButton;
-
-    @BindView(R.id.scenario_1_button_green)
-    Button greenButton;
-
-    @BindView(R.id.scenario_1_button_blue)
-    Button blueButton;
+    private IScenario1Presenter presenter;
 
     public Scenario1Fragment() {
-        presenter = new Scenario1Presenter(this, AppDirectorSingleton.getInstance().getScenario1Model());
+        // Empty
     }
 
     /**
@@ -118,7 +119,23 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
     }
 
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        IScenario1Model model = AppDirectorSingleton.getInstance().getScenario1Model();
+        presenter = new Scenario1Presenter(this, model);
+    }
+
+    @Override
+    public void setSwatchColor(@NonNull String colorString) {
+        Log.i(TAG, "Into setSwatchColor with colorString=" + colorString);
+        NamedColor swatchColor = NamedColor.parseByColorString(colorString);
+        if (swatchColor != NamedColor.NULL_COLOR) {
+            itemTextView.setText(swatchColor.getName());
+        }
+    }
+
+    @Override
     public void setFillColor(String colorString) {
+        Log.i(TAG, "Into setFillColor with colorString=" + colorString);
         fillColorView.setBackgroundColor(Color.parseColor(colorString));
     }
 
@@ -129,6 +146,7 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
     @Override
     public void setPageNumber(int pageNumber) {
+        Log.i(TAG, "setPageNumber: pageNumber=" + pageNumber);
         // Item indexes are 0-based and page numbers are 1-based
         numberedFragmentViewPager.setCurrentItem(pageNumber - 1);
     }
@@ -140,6 +158,7 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
         @Override
         public void onClick(View view) {
+            Log.i(TAG, "SwatchClickListener.onClick");
             NamedColor clickedColor = NamedColor.valueOf((String) view.getTag());
             presenter.swatchPressed(clickedColor);
         }
@@ -169,8 +188,14 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
         @Override
         public void onPageSelected(int position) {
-            // Position is 0-based but page numbes are 1-based
-            presenter.pageSelected(position + 1);
+            Log.i(TAG, "PageChangeListener.onPageSelected: position=" + position);
+
+            // Null check is for case of orientation change where receipt of
+            // PageNumberPropertyChangedEvent sneaks in before presenter can be created.
+            if (presenter != null) {
+                // Position is 0-based but page numbers are 1-based
+                presenter.pageSelected(position + 1);
+            }
         }
     }
 }

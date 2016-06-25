@@ -7,7 +7,7 @@ import com.squareup.otto.Produce;
 
 import java.util.List;
 
-import tech.bailey.rod.bus.DestinationsLoadSuccessEvent;
+import tech.bailey.rod.scenario2.event.DestinationsLoadSuccessEvent;
 import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
@@ -25,7 +25,6 @@ public class Scenario2Model implements IScenario2Model {
     private boolean mapIsShowing;
 
     public Scenario2Model() {
-       // Empty
         EventBusSingleton.getInstance().getBus().register(this);
     }
 
@@ -54,19 +53,12 @@ public class Scenario2Model implements IScenario2Model {
 
     @Override
     public void setDestinations(List<Destination> destinations) {
-        Log.i(TAG, "==============================================");
-        Log.i(TAG, "==== INto Scenario2Model.setDestinations =====");
-        Log.i(TAG, "==============================================");
         this.destinations = destinations;
-        Log.i(TAG, "===== Posting DestinationsLoadSuccessEvent ======");
         EventBusSingleton.getInstance().getBus().post(new DestinationsLoadSuccessEvent(destinations));
     }
 
     @Produce
     public DestinationsLoadSuccessEvent produceDestinationsUpdatedEvent() {
-        Log.i(TAG, "=============================================");
-        Log.i(TAG, "==== Into.produceDestinationsUpdatedEvent with destinations=" + destinations);
-        Log.i(TAG, "=============================================");
         return new DestinationsLoadSuccessEvent(destinations);
     }
 

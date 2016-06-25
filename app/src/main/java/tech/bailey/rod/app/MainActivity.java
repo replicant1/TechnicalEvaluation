@@ -8,16 +8,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
-import java.util.List;
-
 import tech.bailey.rod.R;
-import tech.bailey.rod.bus.DestinationsLoadFailureEvent;
-import tech.bailey.rod.bus.EventBusSingleton;
-import tech.bailey.rod.json.Destination;
-import tech.bailey.rod.service.FakeTravelTimeService;
-import tech.bailey.rod.service.IJobFailureHandler;
-import tech.bailey.rod.service.IJobSuccessHandler;
-import tech.bailey.rod.service.ITravelTimeService;
 
 /**
  * Hosts the application's view at the highest level. It's only serious responsibility is to
@@ -46,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Log.i(TAG, "@@ onCreate");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
@@ -63,6 +55,41 @@ public class MainActivity extends AppCompatActivity {
         mViewPager.addOnPageChangeListener(new ScenarioTabChangeListener(this));
     }
 
+    @Override
+    protected void onDestroy() {
+        Log.i(TAG, "@@ onDestroy");
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        Log.i(TAG, "@@ onPause");
+        super.onPause();
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.i(TAG, "@@ onRestart");
+        super.onRestart();
+    }
+
+    @Override
+    protected void onResume() {
+        Log.i(TAG, "@@ onResume");
+        super.onResume();
+    }
+
+    @Override
+    protected void onStart() {
+        Log.i(TAG, "@@ onStart");
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.i(TAG, "@@ onStop");
+        super.onStop();
+    }
 
     /**
      * Listens to the app's primary tab and whenever the "Scenario 2" tab is first clicked,

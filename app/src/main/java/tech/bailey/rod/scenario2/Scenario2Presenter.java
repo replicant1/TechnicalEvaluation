@@ -1,8 +1,6 @@
 package tech.bailey.rod.scenario2;
 
-import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 
 import com.squareup.otto.Subscribe;
@@ -10,9 +8,11 @@ import com.squareup.otto.Subscribe;
 import java.util.LinkedList;
 import java.util.List;
 
+import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
-import tech.bailey.rod.bus.DestinationsLoadFailureEvent;
-import tech.bailey.rod.bus.DestinationsLoadSuccessEvent;
+import tech.bailey.rod.app.TechnicalEvaluationApplication;
+import tech.bailey.rod.scenario2.event.DestinationsLoadFailureEvent;
+import tech.bailey.rod.scenario2.event.DestinationsLoadSuccessEvent;
 import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.json.Destination;
 
@@ -98,12 +98,16 @@ public class Scenario2Presenter implements IScenario2Presenter {
     public void retryButtonPressed() {
         scenario2View.showProgressPanel(
                 IScenario2View.ProgressPanelMode.MODE_INDETERMINATE_PROGRESS,
-                "Loading travel times...");
+                TechnicalEvaluationApplication.context.getString(
+                        R.string.scenario_2_progress_message));
         AppDirectorSingleton.getInstance().loadTravelTimeData();
     }
 
     @Subscribe
     public void onBusEvent(DestinationsLoadSuccessEvent event) {
+        Log.i(TAG, "onBusEvent(DestinatiosLoadSuccessEvent event.destinations=" +
+                event.getDestinations());
+
         if (event.getDestinations() != null) {
             List<String> names = new LinkedList<String>();
             for (Destination destination : event.getDestinations()) {

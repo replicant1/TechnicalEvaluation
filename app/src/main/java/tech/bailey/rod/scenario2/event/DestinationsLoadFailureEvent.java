@@ -1,4 +1,4 @@
-package tech.bailey.rod.bus;
+package tech.bailey.rod.scenario2.event;
 
 import android.support.annotation.NonNull;
 

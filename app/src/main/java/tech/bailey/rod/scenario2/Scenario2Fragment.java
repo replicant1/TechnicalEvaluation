@@ -211,6 +211,37 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
+    public void onResume() {
+        Log.i(TAG, "@@ onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, "@@ onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        Log.i(TAG, "@@ onStart");
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, "@@ onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, "@@ onDestroy");
+        super.onDestroy();
+    }
+
+
+    @Override
     public void showProgressPanel(ProgressPanelMode mode, String message) {
         progressMonitor.setVisibility(View.VISIBLE);
         progressMessage.setText(message);

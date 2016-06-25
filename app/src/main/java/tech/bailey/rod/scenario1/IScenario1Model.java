@@ -12,7 +12,7 @@ import android.support.annotation.Nullable;
  * <li> Currently selected page number (there is always one)</li>
  * </ul>
  * Note that the text contents of the card that displays the current swatch color is not
- * modelled separately. It can be deduced from the value of the curren swatch color.
+ * modelled separately. It can be deduced from the value of the current swatch color.
  */
 public interface IScenario1Model {
 
