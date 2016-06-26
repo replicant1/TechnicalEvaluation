@@ -17,7 +17,7 @@ Other aspects of the design:
 - Runtime configuration properties are set in the file `assets/config.properties`
 - Views and Presenters communicate via well defined interfaces e.g. `IScenario1View`, `IScenario1Presenter`.
 - Presenters send messages to Models synchronously, via well defined interfaces. 
-- Models send messages to Presenters asynchrounsly using Events and an EventBus. I have only done this for Scenario 2 at the moment, as it involves use cases where asynchronous results are achieved. This is not so for Scenario 1, so I have saved some time by simply having the presenter update both model and view synchronously.
+- Models send messages to Presenters asynchrounsly using Events and an EventBus.
 
 #### The Facade Pattern
 
@@ -25,15 +25,11 @@ The interface `ITravelTimeService` is a facade to backend service operations. Th
 
 #### The Singleton Pattern
 
-`EventBusSingleton`, `AppDirectorSingleton`, `ConfigSingleton`, `JsonUtils`
+`EventBusSingleton`, `AppDirectorSingleton`, `ConfigSingleton`
 
 #### The Observer Pattern
 
-The publish / subscribe of events.
-
-#### The Adapter Pattern
-
-ListAdapter and PageAdapter.
+The publish / subscribe of events to the `Otto` event bus is an illustration of the Observer pattern.
 
 #### The MVP Pattern
 
@@ -41,7 +37,14 @@ MVP is used at both the feature and architectural level. The **View** is either 
 
 #Orientation Changes
 
-Handling orientation changes in an implementation employing fragments is a challenge, because fragments are recreated, making it necessary to somehow preserve their state across the orientation change and recreate the views from the preserved state information. In this app, the class `AppDirectorSingleton` is the repository of all state info retained across orientation changes. 
+When the device orientation changes, the following occurs:
+1. The `MainActivity` is destroyed and recreated by Android.
+2. The fragments `Sceario1Fragment` and `Scenario2Fragment` are destroyed by Android
+3. As part of their destruction, each fragment unregisters their associated presenters: `IScenario1Presenter` and `IScenario2Presenter`. See the `onDestroy()` methods of both.
+4. The models behind each fragment are retained in the singleton `AppDirectorSingleton`. In this way, state has been preserved.
+5. Android recreates `Scenario1Fragment` which, in its `onViewCreated` method creates a new `Scenario1Presenter` attached to the pre-existing `Scenario1Model`.
+6. Android recreates `Scenario2Fragment` which, in its `onViewCreated` method creates a new `Scenario2Presenter` attached to the pre-existing `Scenario2Model`.
+7. When each of the Presenters is recreated, they register themselves with the Otto Event Bus. Because they both `@Subscribe` to various property change events, the corresponding `@Produce` methods of the models are fired and there is a flood of events from Model to Presenter to bring the Presenter in line with the current state of the model.
 
 I have not captured all of those attributes of the view's state that I might have e.g. the scroll position of scroll bars. Doing so would move the architecture closer to MVVP, but perhaps require a bidirectional binding library to achieve efficiently.
 
