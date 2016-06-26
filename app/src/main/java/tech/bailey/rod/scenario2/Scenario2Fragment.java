@@ -51,19 +51,11 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     @BindView(R.id.scenario_2_destination_spinner)
     Spinner destinationSpinner;
 
-    private GoogleMap googleMap;
-
     @BindView(R.id.scenario_2_map_card)
     View mapCard;
 
-    private boolean mapIsReady;
-
-    private IScenario2Model model;
-
     @BindView(R.id.scenario_2_button_navigate)
     Button navigateButton;
-
-    private IScenario2Presenter presenter;
 
     @BindView(R.id.scenario_2_progress_bar)
     ProgressBar progressBar;
@@ -77,10 +69,18 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     @BindView(R.id.scenario_2_button_retry)
     Button retryButton;
 
-    private SupportMapFragment supportMapFragment;
-
     @BindView(R.id.scenario_2_travel_times_list)
     ListView travelTimesList;
+
+    private GoogleMap googleMap;
+
+    private boolean mapIsReady;
+
+    private IScenario2Model model;
+
+    private IScenario2Presenter presenter;
+
+    private SupportMapFragment supportMapFragment;
 
     public Scenario2Fragment() {
         // Empty
@@ -140,6 +140,38 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     }
 
     @Override
+    public void onDestroy() {
+        Log.i(TAG, hashCode() + " @@ onDestroy");
+        super.onDestroy();
+
+        EventBusSingleton.getInstance().getBus().unregister(presenter);
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, hashCode() + " @@ onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, hashCode() + " @@ onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onStart() {
+        Log.i(TAG, hashCode() + " @@ onStart");
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, hashCode() + " @@ onStop");
+        super.onStop();
+    }
+
+    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         // We defer creation of the presenter until here because as soon as it is created,
         // and linked to the model, there may be a flood of update events from the model
@@ -160,18 +192,6 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
                 R.layout.destination_name_spinner_dropdown_item, //
                 destinationNames); //
         destinationSpinner.setAdapter(adapter);
-
-        // Spinners do not allow "no selection", so after repopulating the list
-        // of available choices, we automatically select the first item in the list
-//        if (presenter != null) {
-//            if (destinationSpinner.getTag() != null) {
-//                String pendingSelection = (String) destinationSpinner.getTag();
-//                destinationSpinner.setTag(null);
-//                setSelectedDestinationName(pendingSelection);
-//            } else {
-//                presenter.destinationNameSelected(destinationNames.get(0));
-//            }
-//        }
     }
 
     @Override
@@ -231,42 +251,10 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
             googleMap.addMarker(new MarkerOptions().position(location));
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
         } else {
-            // NOTE Would be better to poll repeatedly until map is ready rather than
+            // TODO Would be better to poll repeatedly until map is ready rather than
             // just do nothing.
             Log.w(TAG, "showMap was called before map was ready");
         }
-    }
-
-    @Override
-    public void onResume() {
-        Log.i(TAG, hashCode() + " @@ onResume");
-        super.onResume();
-    }
-
-    @Override
-    public void onPause() {
-        Log.i(TAG, hashCode() + " @@ onPause");
-        super.onPause();
-    }
-
-    @Override
-    public void onStart() {
-        Log.i(TAG, hashCode() + " @@ onStart");
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        Log.i(TAG, hashCode() + " @@ onStop");
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroy() {
-        Log.i(TAG, hashCode() + " @@ onDestroy");
-        super.onDestroy();
-
-        EventBusSingleton.getInstance().getBus().unregister(presenter);
     }
 
     @Override

@@ -30,6 +30,10 @@ public interface IScenario2Model {
     @NonNull
     public List<Destination> getDestinations();
 
+    /**
+     * @return The current state of the mode with respect to the asynchronous loading of
+     * travel times.
+     */
     public LoadingCondition getLoadingCondition();
 
     /**
@@ -44,6 +48,9 @@ public interface IScenario2Model {
      */
     public Destination getSelectedDestination();
 
+    /**
+     * Triggers off the asynchronous loading of travel times from a remote web service.
+     */
     public void loadDestinationsAsync();
 
     /**

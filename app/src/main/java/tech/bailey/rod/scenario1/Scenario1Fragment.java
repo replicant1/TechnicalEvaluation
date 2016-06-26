@@ -19,6 +19,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import tech.bailey.rod.R;
 import tech.bailey.rod.app.AppDirectorSingleton;
+import tech.bailey.rod.bus.EventBusSingleton;
 import tech.bailey.rod.scenario2.Scenario2Presenter;
 
 /**
@@ -120,6 +121,11 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        // We defer creation of the presenter until here because as soon as it is created,
+        // and linked to the model, there may be a flood of update events from the model
+        // (e.g. if the destinations have already been read in, as happens when using the
+        // FakeTravelTimeService), and we don't want to try and update views that have not
+        // yet been created.
         IScenario1Model model = AppDirectorSingleton.getInstance().getScenario1Model();
         presenter = new Scenario1Presenter(this, model);
     }
@@ -131,6 +137,38 @@ public class Scenario1Fragment extends Fragment implements IScenario1View {
         if (swatchColor != NamedColor.NULL_COLOR) {
             itemTextView.setText(swatchColor.getName());
         }
+    }
+
+    @Override
+    public void onResume() {
+        Log.i(TAG, hashCode() + " @@ onResume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        Log.i(TAG, hashCode() + " @@ onPause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStart() {
+        Log.i(TAG, hashCode() + " @@ onStart");
+        super.onStart();
+    }
+
+    @Override
+    public void onStop() {
+        Log.i(TAG, hashCode() + " @@ onStop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.i(TAG, hashCode() + " @@ onDestroy");
+        super.onDestroy();
+
+        EventBusSingleton.getInstance().getBus().unregister(presenter);
     }
 
     @Override

@@ -3,7 +3,9 @@ package tech.bailey.rod.scenario2;
 import android.support.annotation.NonNull;
 
 /**
- * Created by rodbailey on 21/06/2016.
+ * Pairs a ModeOfTransport with a String that describes a travel time, typically in minutes. The
+ * two represent a particular mode of transport used for a period of time to travel to a destination
+ * from cental.
  */
 public class ModeTravelTime {
     private final ModeOfTransport mode;
