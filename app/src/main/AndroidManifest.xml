@@ -13,7 +13,10 @@
     <!-- Need this permission to load Destinations JSON data from remote server -->
     <uses-permission android:name="android.permission.INTERNET"/>
 
+    <!--oandroid:name="tech.bailey.rod.app.TechnicalEvaluationApplication"-->
+
     <application
+
         android:name="tech.bailey.rod.app.TechnicalEvaluationApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"

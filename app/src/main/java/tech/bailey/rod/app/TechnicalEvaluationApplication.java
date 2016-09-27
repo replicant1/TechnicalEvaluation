@@ -2,6 +2,7 @@ package tech.bailey.rod.app;
 
 import android.app.Application;
 import android.content.Context;
+import android.support.multidex.MultiDex;
 
 /**
  * The application representing all of the Technical Evaluation app. This class exists solely for
@@ -15,6 +16,12 @@ public class TechnicalEvaluationApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        context = getApplicationContext();
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+        super.attachBaseContext(base);
+        MultiDex.install(this);
+        context = base;
     }
 }
