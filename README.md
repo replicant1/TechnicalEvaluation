@@ -17,7 +17,7 @@ Note: These images only appear when the document is viewed on the Github web sit
 
 ##Landscape Device Orientation
 
-![Scenario 3 Portrait](/doc/scenario_3_portrait.png) ![Scenario 4 Portrait](/doc/scenario_4_portrait.png)
+![Scenario 3 Portrait](/doc/scenario_1_landscape.png) ![Scenario 4 Portrait](/doc/scenario_2_landscape.png)
 
 #Design Overview
 Individual features of the application (e.g. "scenario1", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
