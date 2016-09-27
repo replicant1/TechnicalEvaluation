@@ -1,6 +1,8 @@
 package tech.bailey.rod;
 
 import android.graphics.Color;
+import android.support.test.espresso.action.ViewActions;
+import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -61,7 +63,7 @@ public class TestEspressoTest {
         onView(withText(R.string.scenario_2_tab_title)).check(matches(not(isSelected())));
     }
 
-    @Test
+   @Test
     public void swatchesAreOfCorrectColors() {
         // Swatch 1 is "Medium Sea Green" = #3CB371
         onView(withId(R.id.scenario_1_swatch_1)).check(matches(
@@ -86,10 +88,49 @@ public class TestEspressoTest {
 
     @Test
     public void swatchesAreOfCorrectWidth() {
+        // Correct width of all swatches is 80dp
         onView(withId(R.id.scenario_1_swatch_1)).check(matches(CustomMatchers.withWidth(80)));
         onView(withId(R.id.scenario_1_swatch_2)).check(matches(CustomMatchers.withWidth(80)));
         onView(withId(R.id.scenario_1_swatch_3)).check(matches(CustomMatchers.withWidth(80)));
         onView(withId(R.id.scenario_1_swatch_4)).check(matches(CustomMatchers.withWidth(80)));
         onView(withId(R.id.scenario_1_swatch_5)).check(matches(CustomMatchers.withWidth(80)));
+    }
+
+    @Test
+    public void clickOnSwatchDisplaysCorrectColorNameInRow4() {
+        // Scroll until swatch 1 is in view
+        onView(withId(R.id.scenario_1_swatch_1)).perform(ViewActions.scrollTo());
+
+        // Swatch 1 = Medium Sea Green
+        onView(withId(R.id.scenario_1_swatch_1)).perform(ViewActions.click());
+        onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Medium Sea Green")));
+
+        // Scroll until swatch 2 is in view
+        onView(withId(R.id.scenario_1_swatch_2)).perform(ViewActions.scrollTo());
+
+        // Swatch 2 = Deep Sky Blue
+        onView(withId(R.id.scenario_1_swatch_2)).perform(ViewActions.click());
+        onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Deep Sky Blue")));
+
+        // Scroll until swatch 3 is in view
+        onView(withId(R.id.scenario_1_swatch_3)).perform(ViewActions.scrollTo());
+
+        // Swatch 3 = Light Goldenrod Yellow
+        onView(withId(R.id.scenario_1_swatch_3)).perform(ViewActions.click());
+        onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Light Goldenrod Yellow")));
+
+        // Scroll until swatch 4 is in view
+        onView(withId(R.id.scenario_1_swatch_5)).perform(ViewActions.scrollTo());
+
+        // Swatch 4 = Medium Orchid
+        onView(withId(R.id.scenario_1_swatch_4)).perform(ViewActions.click());
+        onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Medium Orchid")));
+
+        // Scroll until swatch 5 is in view
+        onView(withId(R.id.scenario_1_swatch_3)).perform(ViewActions.scrollTo());
+
+        // Swatch 5 = Dodger Blue
+        onView(withId(R.id.scenario_1_swatch_5)).perform(ViewActions.click());
+        onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Dodger Blue")));
     }
 }
