@@ -24,7 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
 
 /**
  * Tests the row of Scenario 1 tab that has 4 pages in a view pager.  Note that these
- * test methods are executed in a predefined order.
+ * test methods are executed in a predefined order,which is why they are named "testXXX"
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
@@ -80,7 +80,12 @@ public class Scenario1PagesTest {
 
     @Test
     public void test030PageChangesAreReflectedInPageIndicator() {
-        // Assume we are at the first page
+        // I can find no way to test the page indicator. It doesn't use child
+        // views to represent each circle, rather it is just a single view that
+        // draws the circles within itself. Itdoesn't expse any properties that
+        // might be tested.
+        // TODO: Add a listener that changes the tag key of the indicator View
+        // and then check value of tag key from Esporesson
 
     }
 

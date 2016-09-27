@@ -1,7 +1,9 @@
 package tech.bailey.rod;
 
 import android.graphics.drawable.ColorDrawable;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
+import android.widget.TextView;
 
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -53,6 +55,19 @@ public abstract class CustomMatchers {
                 System.out.println("width="+ item.getWidth());
                 float density = item.getContext().getResources().getDisplayMetrics().density;
                 return (widthDP * density == item.getWidth());
+            }
+        };
+    }
+
+    public static Matcher<View> withTextViewGravity(final int gravity)  {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            public void describeTo(Description description) {
+                description.appendText("gravity:" + gravity);
+            }
+
+            @Override
+            protected boolean matchesSafely(TextView item) {
+                return (item.getGravity() == gravity);
             }
         };
     }
