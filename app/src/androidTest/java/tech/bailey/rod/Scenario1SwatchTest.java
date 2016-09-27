@@ -2,7 +2,6 @@ package tech.bailey.rod;
 
 import android.graphics.Color;
 import android.support.test.espresso.action.ViewActions;
-import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -16,54 +15,18 @@ import tech.bailey.rod.app.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isSelected;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
-import static org.hamcrest.Matchers.not;
 
 /**
- * Created by rodbailey on 26/09/2016.
+ * Tests the row of coloured swatches at top of Scenario 1 tab.
  */
-
 @RunWith(AndroidJUnit4.class)
 @LargeTest
-public class TestEspressoTest {
+public class Scenario1SwatchTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
-
-    private static String colorIntToHex(int color) {
-        return String.format("#%06X", 0xFFFFFF & color);
-    }
-
-    private static int colorHexToInt(String hexColor) {
-        return Color.parseColor(hexColor);
-    }
-
     @Test
-    public void scenario1TabIsSelected() {
-        // Main layout is displayed
-        onView(withId(R.id.main_content)).check(matches(isDisplayed()));
-
-        // Tab bar is displayed
-        onView(withId(R.id.tabs)).check(matches(isDisplayed()));
-
-        // "Scenario 1" tab is selected
-        onView(ViewMatchers.withText(R.string.scenario_1_tab_title)).check(matches(isSelected()));
-
-        // Main layout for scenario 1 fragment is displayed
-        onView(withId(R.id.scenario_1_rows)).check(matches(isDisplayed()));
-    }
-
-    @Test
-    public void scenario2TabIsNotSelected() {
-        //"Scenario 2" tab is not selected
-        onView(withText(R.string.scenario_2_tab_title)).check(matches(not(isSelected())));
-    }
-
-   @Test
     public void swatchesAreOfCorrectColors() {
         // Swatch 1 is "Medium Sea Green" = #3CB371
         onView(withId(R.id.scenario_1_swatch_1)).check(matches(
@@ -132,5 +95,13 @@ public class TestEspressoTest {
         // Swatch 5 = Dodger Blue
         onView(withId(R.id.scenario_1_swatch_5)).perform(ViewActions.click());
         onView(withId(R.id.scenario_1_row_4)).check(matches(ViewMatchers.withText("Dodger Blue")));
+    }
+
+    private static String colorIntToHex(int color) {
+        return String.format("#%06X", 0xFFFFFF & color);
+    }
+
+    private static int colorHexToInt(String hexColor) {
+        return Color.parseColor(hexColor);
     }
 }

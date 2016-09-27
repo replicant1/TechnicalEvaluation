@@ -1,11 +1,11 @@
-##Technical Evaluation App
+#Technical Evaluation App
 
 Rod Bailey
 Friday 24 June 2016
 
 #Summary
 
-This is an Android application created as a technical exercise. It aims to illustrate an exemplary architecture (MVP) and the use of some core technologies and patterns that find common application in Android development.
+This is an Android application created as a technical exercise for Android Developers. It aims to illustrate an exemplary architecture (MVP) and the use of some core technologies and patterns that find common application in Android development. The requirements document is in a PDF file in the root directory of this project, and is called *Android Developer - Step Code Review.pdf*.
 
 #Design Overview
 Individual features of the application (e.g. "scenario1", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
