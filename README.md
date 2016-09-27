@@ -9,9 +9,10 @@ This is an Android application created as a technical exercise for Android Devel
 
 #Screenshots
 
-##Landscape
+##Portrait Device Orientation
 
-![Scenario 1 when device is in landscape orientation](http://www.github.com/replicant1/TechnicalEvaluation/doc/scenario_1_landscape.png)
+![Scenario 1 Portrait](/doc/scenario_1_portrait.png) ![Scenario 2 Portrait](/doc/scenario_2_portrait.png)
+
 
 #Design Overview
 Individual features of the application (e.g. "scenario1", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
