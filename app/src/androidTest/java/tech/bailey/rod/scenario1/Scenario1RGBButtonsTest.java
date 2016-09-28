@@ -31,7 +31,7 @@ public class Scenario1RGBButtonsTest {
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
 
-    @BeforeClass
+    @Before
     public void selectScenario1Tab() {
         // Click on "Scenario 1" tab
         onView(withText(R.string.scenario_1_tab_title)).perform(click());

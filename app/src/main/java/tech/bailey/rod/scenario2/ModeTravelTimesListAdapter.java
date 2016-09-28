@@ -49,10 +49,12 @@ public class ModeTravelTimesListAdapter extends ArrayAdapter<ModeTravelTime> {
         switch (modeTravelTime.getMode()) {
             case CAR:
                 modeIcon.setImageResource(R.drawable.ic_directions_car_black_18dp);
+                modeIcon.setTag("car");
                 break;
 
             case TRAIN:
                 modeIcon.setImageResource(R.drawable.ic_directions_railway_black_18dp);
+                modeIcon.setTag("train");
                 break;
         }
 

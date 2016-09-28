@@ -9,6 +9,9 @@ import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
+import tech.bailey.rod.scenario2.ModeOfTransport;
+import tech.bailey.rod.scenario2.ModeTravelTime;
+
 /**
  * Matchers need particularly for the TechnicalEvaluation tests but not provided by Espresso or Hamcrest
  */
@@ -68,6 +71,20 @@ public abstract class CustomMatchers {
             @Override
             protected boolean matchesSafely(TextView item) {
                 return (item.getGravity() == gravity);
+            }
+        };
+    }
+
+    public static Matcher<Object> withModeOfTransport(final ModeOfTransport mode) {
+        return new BoundedMatcher<Object, ModeTravelTime>(ModeTravelTime.class) {
+            @Override
+            protected boolean matchesSafely(ModeTravelTime mtt) {
+                return (mtt.getMode() == mode);
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("with id: " + mode);
             }
         };
     }
