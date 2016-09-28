@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.util;
 
 import android.graphics.drawable.ColorDrawable;
 import android.support.test.espresso.matcher.BoundedMatcher;

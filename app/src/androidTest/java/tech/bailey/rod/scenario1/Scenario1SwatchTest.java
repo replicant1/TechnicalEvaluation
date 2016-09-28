@@ -1,4 +1,4 @@
-package tech.bailey.rod;
+package tech.bailey.rod.scenario1;
 
 import android.graphics.Color;
 import android.support.test.espresso.action.ViewActions;
@@ -7,15 +7,20 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.test.suitebuilder.annotation.LargeTest;
 
+import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import tech.bailey.rod.util.CustomMatchers;
+import tech.bailey.rod.R;
 import tech.bailey.rod.app.MainActivity;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 /**
  * Tests the row of coloured swatches at top of Scenario 1 tab.
@@ -26,10 +31,17 @@ public class Scenario1SwatchTest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityRule = new ActivityTestRule(MainActivity.class);
+
+    @BeforeClass
+    public void selectScenario1Tab() {
+        // Click on "Scenario 1" tab
+        onView(withText(R.string.scenario_1_tab_title)).perform(click());
+    }
+
     @Test
     public void swatchesAreOfCorrectColors() {
         // Swatch 1 is "Medium Sea Green" = #3CB371
-        onView(withId(R.id.scenario_1_swatch_1)).check(matches(
+        onView(ViewMatchers.withId(R.id.scenario_1_swatch_1)).check(matches(
                 CustomMatchers.withBackgroundColor(colorHexToInt("#3CB371"))));
 
         // Swatch 2 is "Deep Sky Blue" = #00BFFF
