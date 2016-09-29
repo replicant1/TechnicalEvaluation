@@ -5,6 +5,8 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.SupportMapFragment;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -75,16 +77,16 @@ public abstract class CustomMatchers {
         };
     }
 
-    public static Matcher<Object> withModeOfTransport(final ModeOfTransport mode) {
-        return new BoundedMatcher<Object, ModeTravelTime>(ModeTravelTime.class) {
+    public static Matcher<View> withModeOfTransport(final ModeOfTransport mode) {
+        return new TypeSafeMatcher<View>() {
             @Override
-            protected boolean matchesSafely(ModeTravelTime mtt) {
-                return (mtt.getMode() == mode);
+            protected boolean matchesSafely(View item) {
+                return (mode.name().equals(item.getTag()));
             }
 
             @Override
             public void describeTo(Description description) {
-                description.appendText("with id: " + mode);
+                description.appendText("tag: " + mode.name());
             }
         };
     }
