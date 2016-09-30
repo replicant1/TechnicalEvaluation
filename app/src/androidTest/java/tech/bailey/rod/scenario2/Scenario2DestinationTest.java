@@ -90,22 +90,22 @@ public class Scenario2DestinationTest {
         // Position 0 = "Blue Mountains"
         onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(
                 R.id.scenario_2_destination_spinner)).atPosition(0).check(
-                matches(withText("Blue Mountains")));
+                matches(withText(Destination.BLUE_MOUNTAINS.getJsonName())));
 
         // Position 1 = ""taronga zoo"
         onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(
                 R.id.scenario_2_destination_spinner)).atPosition(1).check(
-                matches(withText("taronga zoo")));
+                matches(withText(Destination.TARONGA_ZOO.getJsonName())));
 
         // Position 2 = "Bondi Beach"
         onData(allOf(is(instanceOf(String.class)))).inAdapterView(withId(
                 R.id.scenario_2_destination_spinner)).atPosition(2).check(
-                matches(withText("Bondi Beach")));
+                matches(withText(Destination.BONDI_BEACH.getJsonName())));
     }
 
     // @Test
     public void navigateToBlueMountainsShowsMapCard() {
-        selectDestination("Blue Mountains");
+        selectDestination(Destination.BLUE_MOUNTAINS);
         clickNavigateButton();
 
         // Card and map are displayed
@@ -117,7 +117,7 @@ public class Scenario2DestinationTest {
 
     @Test
     public void navigateToBondiBeachShowsCorrectlyConfiguredMapCard() {
-        selectDestination("Bondi Beach");
+        selectDestination(Destination.BONDI_BEACH);
         clickNavigateButton();
 
         // Card and map are displayed
@@ -129,7 +129,7 @@ public class Scenario2DestinationTest {
 
     @Test
     public void navigateToTarongaZooShowsCorrectlyConfiguredMapCard() {
-        selectDestination("taronga zoo");
+        selectDestination(Destination.TARONGA_ZOO);
         clickNavigateButton();
 
         // Card and map are displayed
@@ -141,13 +141,13 @@ public class Scenario2DestinationTest {
 
     @Test
     public void selectBlueMountainsDisplaysCorrectTravelTimesList() {
-        selectDestination("Blue Mountains");
+        selectDestination(Destination.BLUE_MOUNTAINS);
         checkBlueMountainsDataIsDisplayed();
     }
 
     @Test
     public void selectBondiBeachDisplaysCorrectTravelTime() {
-        selectDestination("Bondi Beach");
+        selectDestination(Destination.BONDI_BEACH);
         checkBondiBeachDataIsDisplayed();
     }
 
@@ -158,7 +158,7 @@ public class Scenario2DestinationTest {
 
     @Test
     public void selectTarongaZooDisplaysCorrectTravelTime() {
-        selectDestination("taronga zoo");
+        selectDestination(Destination.TARONGA_ZOO);
         checkTarongaZooDataIsDisplayed();
     }
 
