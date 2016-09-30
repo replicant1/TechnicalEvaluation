@@ -42,7 +42,7 @@ public class Scenario2OrientationTest {
         Scenario2TestUtils.selectScenario2Tab();
     }
 
-    //@Test
+    @Test
     public void rotatePortraitToLandscapeToPortraitNoMapPreservesBlueMountainsSelection() {
         // Ensure we start in Portrait orientation
         mActivityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -51,6 +51,7 @@ public class Scenario2OrientationTest {
         Scenario2TestUtils.selectScenario2Tab();
 
         // Default selection is blue mountains
+        selectDestination("Blue Mountains");
         checkBlueMountainsDataIsDisplayed();
 
         // ***** Change screen orientation to landscape ****
@@ -68,7 +69,7 @@ public class Scenario2OrientationTest {
         checkBlueMountainsDataIsDisplayed();
     }
 
-    //@Test
+    @Test
     public void rotatePortraitToLandscapeToPortraitNoMapPreservesTarongaZooSelection() {
         // Ensure we start in Portrait orientation
         mActivityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
@@ -95,7 +96,7 @@ public class Scenario2OrientationTest {
         checkTarongaZooDataIsDisplayed();
     }
 
-    //@Test
+    @Test
     public void rotatePortraitToLandscapeToPortraitNoMapPreservesBondiBeachSelection() {
         // Ensure we start in Portrait orientation
         mActivityRule.getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);

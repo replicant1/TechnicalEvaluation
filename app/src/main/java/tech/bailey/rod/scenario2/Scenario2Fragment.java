@@ -1,5 +1,6 @@
 package tech.bailey.rod.scenario2;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -120,6 +121,12 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
 
         retryButton.setOnClickListener(new RetryButtonOnClickListener());
         destinationSpinner.setOnItemSelectedListener(new DestinationSelectedListener());
+//        destinationSpinner.setOnItemClickListener( new AdapterView.OnItemClickListener(){
+//            @Override
+//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+//                Log.i(TAG,String.format("****** ITEM AT POSITION %d WAS CLICKED ******", position));
+//            }
+//        });
         navigateButton.setOnClickListener(new NavigateButtonOnClickListener());
 
         supportMapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.scenario_2_support_map_fragment);
@@ -231,6 +238,9 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
             }
 
             if (selectedIndex != -1) {
+                // If selectedIndex is already selected, we need to have DestinationSelectedListener
+                // triggered anyway (default behaviour is to not trigger). Travel time list won't be
+                // setup unless the DestinationSelectedListener is called.
                 destinationSpinner.setSelection(selectedIndex);
                 navigateButton.setEnabled(true);
             }
@@ -282,14 +292,13 @@ public class Scenario2Fragment extends Fragment implements IScenario2View {
     private class DestinationSelectedListener implements AdapterView.OnItemSelectedListener {
         @Override
         public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
-            if (view != null) {
-                TextView textView = (TextView) view;
-                presenter.destinationNameSelected(textView.getText().toString());
-            }
+            Log.i(TAG, String.format("Selected destination name is %s", adapterView.getSelectedItem().toString()));
+            presenter.destinationNameSelected(adapterView.getSelectedItem().toString());
         }
 
         @Override
         public void onNothingSelected(AdapterView<?> adapterView) {
+            Log.i(TAG, String.format("******* NOTHING WAS SELECTED, but selected item position = %d ********", adapterView.getSelectedItemPosition()));
             // Empty
         }
     }
