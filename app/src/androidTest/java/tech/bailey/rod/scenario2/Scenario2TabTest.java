@@ -24,45 +24,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 
 /**
- * Tests for "Scenario 2" tab. Note that app must be configured so as to be reading data from /assets/sample.json
- * before the tests below will pass.
- * <p>
- * The following data must be in sample.json:
- * <pre>
- * [{
- *      "id": 1,
- *      "name": "Blue Mountains",
- *      "fromcentral": {
- *      "car": "80 Mins",
- *      "train": "120 Mins"
- * },
- *      "location": {
- *          "latitude": -33.7181,
- *          "longitude": 150.3160
- * }
- * }, {
- *      "id": 2,
- *      "name": "taronga zoo",
- *      "fromcentral": {
- *      "car": "30 Mins"
- * },
- *      "location": {
- *          "latitude": -33.8433,
- *          "longitude": 151.2411
- * }
- * }, {
- *      "id": 3,
- *      "name": "Bondi Beach",
- *      "fromcentral": {
- *      "car": "20 Mins",
- *      "train": "40 Mins"
- * },
- *      "location": {
- *          "latitude": -33.8910,
- *          "longitude": 151.27777
- * }
- * }]
- * </pre>
+ * Tests for "Scenario 2" tab
  */
 @RunWith(AndroidJUnit4.class)
 @LargeTest
