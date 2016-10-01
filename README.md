@@ -81,7 +81,7 @@ The following third party libraries have been used:
 
 Current code coverage of the Espresso tests is 85%, as shown in the following report:
 
-![Test Coverage](/doc/expresso-test-coverage.png)
+![Test Coverage](/doc/espresso-test-coverage.png)
 
 There are a few issues in the Github issue tracker for this repository that should help get this up to 100%*[]: 
 
