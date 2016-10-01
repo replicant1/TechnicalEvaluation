@@ -83,5 +83,5 @@ Current code coverage of the Espresso tests is 85%, as shown in the following re
 
 ![Test Coverage](/doc/espresso-test-coverage.png)
 
-There are a few issues in the Github issue tracker for this repository that should help get this up to 100%*[]: 
+There are a few issues in the "Issue tracker" for this repository that should help get this up to 100% 
 
