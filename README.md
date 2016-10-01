@@ -1,7 +1,7 @@
 #Technical Evaluation App
 
 Rod Bailey
-Friday 24 June 2016
+Friday 01 Oct 2016
 
 #Summary
 
@@ -75,12 +75,13 @@ The following third party libraries have been used:
 - **ButterKnife** for injecting Views
 - **Android Support Library** for backwards compatibility and the **card** widget
 - **Google Play Services** for Google Maps
+- **Espresso** for unit testing
 
-#TODO
+#Test Coverage
 
-Due to a limited time budget, I have not completed the following aspects of the exercise:
+Current code coverage of the Espresso tests is 85%, as shown in the following report:
 
-- Supporting distinct DEBUG and RELEASE flavors of the app
-- Unit tests
+![Test Coverage](/doc/expresso-test-coverage.png)
 
-Be aware that for unit testing I usually employ *Espresso* for instrumented tests and *JUnit* / *Mockito* for uninstrumented tests.
+There are a few issues in the Github issue tracker for this repository that should help get this up to 100%*[]: 
+
