@@ -1,25 +1,25 @@
-#Technical Evaluation App
+# Technical Evaluation App
 
 Rod Bailey
 Friday 01 Oct 2016
 
-#Summary
+# Summary
 
 This is an Android application created as a technical exercise for Android Developers. It aims to illustrate an exemplary architecture (MVP) and the use of some core technologies and patterns that find common application in Android development. The requirements document is in a PDF file in the root directory of this project, and is called *Android Developer - Step Code Review.pdf*.
 
-#Screenshots
+# Screenshots
 
 Note: These images only appear when the document is viewed on the Github web site.
 
-##Portrait Device Orientation
+## Portrait Device Orientation
 
 ![Scenario 1 Portrait](/doc/scenario_1_portrait.png) ![Scenario 2 Portrait](/doc/scenario_2_portrait.png)
 
-##Landscape Device Orientation
+## Landscape Device Orientation
 
 ![Scenario 3 Portrait](/doc/scenario_1_landscape.png) ![Scenario 4 Portrait](/doc/scenario_2_landscape.png)
 
-#Design Overview
+# Design Overview
 Individual features of the application (e.g. "scenario1", "scenario2") are structured according to the MVP pattern. The overall app architecture is also inline with MVP but there is an additional "service" layer through which all remote data access occurs.
 
 Other aspects of the design:
@@ -60,11 +60,11 @@ When the device orientation changes, the following occurs:
 
 I have not captured all of those attributes of the view's state that I might have e.g. the scroll position of scroll bars. Doing so would move the architecture closer to MVVP, but perhaps require a bidirectional binding library to achieve efficiently.
 
-#Android Versions
+# Android Versions
 
 This app will work on Android versions from API level 16 onwards.
 
-#Libraries
+# Libraries
 
 The following third party libraries have been used:
 
@@ -77,7 +77,7 @@ The following third party libraries have been used:
 - **Google Play Services** for Google Maps
 - **Espresso** for unit testing
 
-#Test Coverage
+# Test Coverage
 
 Current code coverage of the Espresso tests is 85%, as shown in the following report:
 
